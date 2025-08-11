@@ -5,6 +5,7 @@ export async function POST(req: Request) {
 	const formData = new URLSearchParams(rawBody);
 
 	const w = await start("storytime", [formData]);
+	console.log(w);
 
 	return new Response(`Started Storytime workflow (ID: ${w.id})`);
 
