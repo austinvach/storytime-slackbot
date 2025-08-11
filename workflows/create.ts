@@ -110,31 +110,171 @@ export async function storytime(slashCommand: URLSearchParams) {
 		ts,
 		message: { user: botId },
 	} = await postMessage(
-		`It's storytime! I'll start the story and you continue it.\n\n> ${aiResponse.story}`,
+		`It's storytime! I'll start the story and you continue it.\n\n> _${aiResponse.story}_`,
 		channelId,
 	);
 
 	// Subscribe to new messages in the thread
-	//const webhook = getWebhook({
-	//	url: "/api/slack/webhook",
-	//	body: z.object({
-	//		event: z.object({
-	//			type: z.literal("message"),
-	//			channel: z.literal(channelId),
-	//			thread_ts: z.literal(ts),
+	const webhook = getWebhook({
+		url: "/api/slack/webhook",
+		body: z.object({
+			event: z.object({
+				type: z.literal("message"),
+				channel: z.literal(channelId),
+				thread_ts: z.literal(ts),
 
-	//			// Exclude messages from the bot itself
-	//			user: z.string().regex(new RegExp(`^(?!${botId}$)`)),
-	//		}),
-	//	}),
-	//});
+				// Exclude messages from the bot itself
+				user: z.string().regex(new RegExp(`^(?!${botId}$)`)),
+			}),
+		}),
+	});
 
 	// Post the initial encouragement message in the thread
 	await postMessage(aiResponse.encouragement, channelId, ts);
 
+	let finalStory: string | undefined;
+
 	// Loop until the LLM decides that the story is complete
-	//while (true) {
-	//	const req = await webhook;
-	//	const data = await req.json();
-	//}
+	while (true) {
+		const req = await webhook;
+		const data = await req.json();
+		console.log(data);
+
+		if (!data.event.text) {
+			continue;
+		}
+
+		const userMessage = data.event.text;
+		messages.push({
+			role: "user",
+			content: userMessage,
+		});
+
+		const aiResponse = await generateStory(messages);
+		await postMessage(aiResponse.encouragement, channelId, ts);
+
+		if (aiResponse.done) {
+			finalStory = aiResponse.story;
+			break;
+		}
+	}
+
+	await Promise.all([
+		postMessage(
+			`Here is the final story:\n\n> _${finalStory}_`,
+			channelId,
+			ts,
+			true,
+		),
+		postComicStrip(channelId, ts, finalStory),
+	]);
+}
+
+async function postComicStrip(
+	channelId: string,
+	threadTs: string,
+	finalStory: string,
+) {
+	"use step";
+
+	const image = await generateImage({
+		model: openai.image("gpt-image-1"),
+		prompt: `Generate an image of a children's storybook panel consisting of
+        4 to 6 panels with the following story.
+        
+        Include text in the panels to tell the story.
+        Please ensure that all panels are visible, and not being cut off.
+        
+        Story:
+        ${finalStory}`,
+	});
+	console.log(image);
+
+	const buffer = image.images[0].uint8Array as Uint8Array;
+
+	const slackToken = process.env.SLACK_BOT_TOKEN;
+	if (!slackToken) {
+		throw new FatalError("SLACK_BOT_TOKEN is not configured");
+	}
+
+	// 1) Get pre-signed upload URL
+	const getUrlRes = await fetch(
+		"https://slack.com/api/files.getUploadURLExternal",
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${slackToken}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				filename: "comic-strip.png",
+				length: buffer.length,
+				alt_text: "Comic strip",
+			}),
+		},
+	);
+	if (!getUrlRes.ok) {
+		throw new FatalError(
+			`Failed to initiate Slack upload: ${getUrlRes.status} ${getUrlRes.statusText}`,
+		);
+	}
+
+	type GetUploadUrlResponse = {
+		ok: boolean;
+		upload_url?: string;
+		file_id?: string;
+		error?: string;
+	};
+
+	const getUrlJson: GetUploadUrlResponse = await getUrlRes.json();
+	if (!getUrlJson.ok || !getUrlJson.upload_url || !getUrlJson.file_id) {
+		throw new FatalError(
+			`Slack getUploadURLExternal error: ${getUrlJson.error ?? "unknown"}`,
+		);
+	}
+
+	// 2) Upload bytes to the provided URL
+	const putRes = await fetch(getUrlJson.upload_url, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "image/png",
+		},
+		body: buffer,
+	});
+	if (!putRes.ok) {
+		throw new FatalError(
+			`Failed to PUT file bytes to Slack: ${putRes.status} ${putRes.statusText}`,
+		);
+	}
+
+	// 3) Complete upload and share into the thread
+	const completeRes = await fetch(
+		"https://slack.com/api/files.completeUploadExternal",
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${slackToken}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				files: [{ id: getUrlJson.file_id, title: "comic-strip.png" }],
+				channel_id: channelId,
+				thread_ts: threadTs,
+				initial_comment: "Here is the comic strip!",
+			}),
+		},
+	);
+	if (!completeRes.ok) {
+		throw new FatalError(
+			`Failed to complete Slack upload: ${completeRes.status} ${completeRes.statusText}`,
+		);
+	}
+
+	type CompleteUploadResponse = { ok: boolean; error?: string };
+	const completeJson: CompleteUploadResponse = await completeRes.json();
+	if (!completeJson.ok) {
+		throw new FatalError(
+			`Slack completeUploadExternal error: ${completeJson.error ?? "unknown"}`,
+		);
+	}
 }
