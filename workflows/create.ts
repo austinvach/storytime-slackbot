@@ -161,7 +161,10 @@ export async function storytime(slashCommand: URLSearchParams) {
 
 	await Promise.all([
 		postMessage(
-			`Here is the final story:\n\n> _${finalStory}_`,
+			`Here is the final story:\n\n${finalStory
+				.split("\n")
+				.map((line) => `> ${line ? `_${line}_` : ""}`)
+				.join("\n")}`,
 			channelId,
 			ts,
 			true,
