@@ -204,12 +204,12 @@ async function postComicStrip(
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${slackToken}`,
-				"Content-Type": "application/json",
+				"Content-Type": "application/x-www-form-urlencoded",
 			},
-			body: JSON.stringify({
+			body: new URLSearchParams({
 				filename: "comic-strip.png",
-				length: buffer.length,
-				alt_text: "Comic strip",
+				length: String(buffer.length),
+				alt_txt: "Comic strip",
 			}),
 		},
 	);
