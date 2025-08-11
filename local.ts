@@ -21,6 +21,7 @@ const messages: ModelMessage[] = [
 	{
 		role: "system",
 		content: `You are a storytime generating bot.
+
             You will initiate the story by providing the introduction (one or two sentences),
             and the user will submit the remaining pieces of the story.
 
@@ -39,7 +40,7 @@ const messages: ModelMessage[] = [
             clear and concise writing style. It should be short enough to be read aloud by
             a child, and fit in a 4 to 6 panel comic strip.
 			
-			You don't need to provide the partial story contents, just the final story in the "finalStory" field.
+			You don't need to provide the intermediate story contents, just the initial introduction and the final story in the "story" field.
 			When the story is complete, say a light hearted comment about the story in the "encouragement" field.`,
 	},
 	{
@@ -51,7 +52,7 @@ const messages: ModelMessage[] = [
 const StorytimeSchema = z.object({
 	done: z.boolean(),
 	encouragement: z.string(),
-	finalStory: z.string(),
+	story: z.string(),
 });
 
 let finalStory = "";
@@ -59,7 +60,9 @@ let finalStory = "";
 while (true) {
 	const result = await generateText({
 		//model: "openai/gpt-5",
-		model: openai.chat("gpt-5"),
+		//model: openai.chat("gpt-5"),
+		model: openai.chat("gpt-5-mini"),
+		//model: openai.chat("gpt-4o"),
 		messages,
 		experimental_output: Output.object({
 			schema: StorytimeSchema,
@@ -74,7 +77,7 @@ while (true) {
 	});
 
 	if (result.experimental_output?.done) {
-		finalStory = result.experimental_output.finalStory;
+		finalStory = result.experimental_output.story;
 		break;
 	}
 
@@ -104,7 +107,7 @@ const image = await generateImage({
 	
 	Story:
 	${finalStory}`,
-	providerOptions: { openai: { quality: "hd", style: "vivid" } }, // optional
+	//providerOptions: { openai: { quality: "hd", style: "vivid" } }, // optional
 });
 
 console.log(await terminalImage.buffer(image.images[0].uint8Array));
