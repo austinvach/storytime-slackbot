@@ -239,7 +239,7 @@ async function postComicStrip(
 		headers: {
 			"Content-Type": "image/png",
 		},
-		body: buffer,
+		body: Buffer.from(buffer),
 	});
 	if (!putRes.ok) {
 		throw new FatalError(
