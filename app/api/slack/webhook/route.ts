@@ -17,5 +17,5 @@ export async function POST(req: Request) {
 	// TODO: validate webhook body
 	// https://api.slack.com/authentication/verifying-requests-from-slack
 
-	return handleWebhook(req);
+	return handleWebhook(req, body);
 }
