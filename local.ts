@@ -1,9 +1,16 @@
-import readline from "node:readline/promises";
-import { generateText, type ModelMessage, Output } from "ai";
 import dotenv from "dotenv";
-import { z } from "zod";
-
 dotenv.config({ path: ".env.local" });
+
+import readline from "node:readline/promises";
+import {
+	experimental_generateImage as generateImage,
+	generateText,
+	type ModelMessage,
+	Output,
+} from "ai";
+import { z } from "zod";
+import { openai } from "@ai-sdk/openai";
+import terminalImage from "terminal-image";
 
 const rl = readline.createInterface({
 	input: process.stdin,
@@ -32,8 +39,8 @@ const messages: ModelMessage[] = [
             clear and concise writing style. It should be short enough to be read aloud by
             a child, and fit in a 4 to 6 panel comic strip.
 			
-			You don't need to provide the partial story contents, just the final story.
-			When the story is complete, say a light hearted comment about the story.`,
+			You don't need to provide the partial story contents, just the final story in the "finalStory" field.
+			When the story is complete, say a light hearted comment about the story in the "encouragement" field.`,
 	},
 	{
 		role: "user",
@@ -51,13 +58,15 @@ let finalStory = "";
 
 while (true) {
 	const result = await generateText({
-		model: "openai/gpt-5",
+		//model: "openai/gpt-5",
+		model: openai.chat("gpt-5"),
 		messages,
 		experimental_output: Output.object({
 			schema: StorytimeSchema,
 		}),
 	});
-	console.log(result.experimental_output?.encouragement);
+	//console.log(result.experimental_output?.encouragement);
+	console.log(result.experimental_output);
 
 	messages.push({
 		role: "assistant",
@@ -70,6 +79,7 @@ while (true) {
 	}
 
 	// read user input
+	console.log("");
 	const userInput = await rl.question("Enter your story piece: ");
 
 	messages.push({
@@ -83,3 +93,18 @@ rl.close();
 console.log("");
 console.log("Here is the final story:");
 console.log(finalStory);
+
+const image = await generateImage({
+	model: openai.image("gpt-image-1"),
+	//model: gateway.imageModel("openai:dall-e-3"),
+	prompt: `Generate an image of a children's storybook panel consisting of
+	4 to 6 panels with the following story.
+	
+	Include text in the panels to tell the story.
+	
+	Story:
+	${finalStory}`,
+	providerOptions: { openai: { quality: "hd", style: "vivid" } }, // optional
+});
+
+console.log(await terminalImage.buffer(image.images[0].uint8Array));

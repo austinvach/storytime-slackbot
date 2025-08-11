@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@ai-sdk/gateway':
+        specifier: ^1.0.4
+        version: 1.0.4(zod@4.0.17)
+      '@ai-sdk/openai':
+        specifier: ^2.0.8
+        version: 2.0.8(zod@4.0.17)
       '@vercel/workflow-cli':
         specifier: 0.0.1-alpha.14
         version: 0.0.1-alpha.14(@aws-sdk/client-sts@3.864.0)
@@ -68,6 +74,12 @@ packages:
 
   '@ai-sdk/gateway@1.0.4':
     resolution: {integrity: sha512-1roLdgMbFU3Nr4MC97/te7w6OqxsWBkDUkpbCcvxF3jz/ku91WVaJldn/PKU8feMKNyI5W9wnqhbjb1BqbExOQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4
+
+  '@ai-sdk/openai@2.0.8':
+    resolution: {integrity: sha512-D5AP65yCXL4GtTrWGhu3hTHhlKyYu8NBRtRZ1h5F8PYXFVLtuiQ0AypbDreXLphONehLf0zGN3Cm3Fob/DDMRw==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4
@@ -3286,6 +3298,12 @@ packages:
 snapshots:
 
   '@ai-sdk/gateway@1.0.4(zod@4.0.17)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.0
+      '@ai-sdk/provider-utils': 3.0.1(zod@4.0.17)
+      zod: 4.0.17
+
+  '@ai-sdk/openai@2.0.8(zod@4.0.17)':
     dependencies:
       '@ai-sdk/provider': 2.0.0
       '@ai-sdk/provider-utils': 3.0.1(zod@4.0.17)
