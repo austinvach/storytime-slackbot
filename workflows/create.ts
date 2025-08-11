@@ -227,6 +227,8 @@ async function postComicStrip(
 	};
 
 	const getUrlJson: GetUploadUrlResponse = await getUrlRes.json();
+	console.log(getUrlJson);
+
 	if (!getUrlJson.ok || !getUrlJson.upload_url || !getUrlJson.file_id) {
 		throw new FatalError(
 			`Slack getUploadURLExternal error: ${getUrlJson.error ?? "unknown"}`,
@@ -235,7 +237,7 @@ async function postComicStrip(
 
 	// 2) Upload bytes to the provided URL
 	const putRes = await fetch(getUrlJson.upload_url, {
-		method: "PUT",
+		method: "POST",
 		headers: {
 			"Content-Type": "image/png",
 		},
@@ -243,7 +245,7 @@ async function postComicStrip(
 	});
 	if (!putRes.ok) {
 		throw new FatalError(
-			`Failed to PUT file bytes to Slack: ${putRes.status} ${putRes.statusText}`,
+			`Failed to POST file bytes to Slack: ${putRes.status} ${putRes.statusText}`,
 		);
 	}
 
