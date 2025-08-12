@@ -23,8 +23,10 @@ export async function storytime(slashCommand: URLSearchParams) {
 		throw new FatalError("`channel_id` is required");
 	}
 
+	// TODO: make these configurable in the slash command
 	const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
-	console.log({ theme });
+	const model = "meta/llama-4-scout";
+	console.log({ theme, model });
 
 	const messages: ModelMessage[] = [
 		{
@@ -45,7 +47,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 	});
 
 	// Ask the LLM to initiate the story
-	const aiResponse = await generateStoryPiece(messages);
+	const aiResponse = await generateStoryPiece(messages, model);
 
 	await updateSlackMessage({
 		channel: channelId,
@@ -99,7 +101,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 		});
 
 		// Submit user's message to the LLM and post the encouragement
-		const aiResponse = await generateStoryPiece(messages);
+		const aiResponse = await generateStoryPiece(messages, model);
 
 		await Promise.all([
 			postSlackMessage({

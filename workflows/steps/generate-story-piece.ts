@@ -1,4 +1,3 @@
-import { openai } from "@ai-sdk/openai";
 import { generateText, type ModelMessage, Output } from "ai";
 import { z } from "zod";
 
@@ -14,7 +13,10 @@ const StoryPieceSchema = z.object({
 		),
 });
 
-export async function generateStoryPiece(messages: ModelMessage[]) {
+export async function generateStoryPiece(
+	messages: ModelMessage[],
+	model: string,
+) {
 	"use step";
 
 	// Debugging
@@ -22,7 +24,7 @@ export async function generateStoryPiece(messages: ModelMessage[]) {
 
 	console.time("Generating story piece");
 	const result = await generateText({
-		model: openai.chat("gpt-5-mini"),
+		model,
 		messages,
 		experimental_output: Output.object({
 			schema: StoryPieceSchema,

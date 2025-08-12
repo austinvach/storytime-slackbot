@@ -44,7 +44,8 @@ while (true) {
 	const result = await generateText({
 		//model: "openai/gpt-5-mini",
 		//model: "anthropic/claude-4-sonnet",
-		model: "xai/grok-4",
+		//model: "xai/grok-4",
+		model: "meta/llama-4-scout",
 		messages,
 		experimental_output: Output.object({
 			schema: StorytimeSchema,
