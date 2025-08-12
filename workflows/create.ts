@@ -51,6 +51,8 @@ async function postMessage(
 }
 
 async function generateStory(messages: ModelMessage[]) {
+	"use step";
+
 	const result = await generateText({
 		model: openai.chat("gpt-5-mini"),
 		messages,
