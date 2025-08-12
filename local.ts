@@ -11,37 +11,20 @@ import {
 import { z } from "zod";
 import { openai } from "@ai-sdk/openai";
 import terminalImage from "terminal-image";
+import { SYSTEM_PROMPT, THEMES, IMAGE_GEN_PROMPT } from "./lib/prompt.ts";
 
 const rl = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout,
 });
 
+const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
+console.log(`Theme: ${theme}`);
+
 const messages: ModelMessage[] = [
 	{
 		role: "system",
-		content: `You are a storytime generating bot.
-
-            You will initiate the story by providing the introduction (one or two sentences),
-            and the user will submit the remaining pieces of the story.
-
-			After 3 to 5 iterations, the story should be complete and you will take the pieces
-			of the story and polish it up
-            to have a cohesive conclusion and report the final story to the user.
-
-			After each iteration, you should provide an encouragement to the user to continue
-			the story (don't include instructions, just inquire about the story contents).
-			
-			When the story is about to be complete, you should provide a final encouragement
-			to the user to finish the story.
-
-			The story
-            should be in the style of a children's book, with a simple vocabulary and a
-            clear and concise writing style. It should be short enough to be read aloud by
-            a child, and fit in a 4 to 6 panel comic strip.
-			
-			You don't need to provide the intermediate story contents, just the initial introduction and the final story in the "story" field.
-			When the story is complete, say a light hearted comment about the story in the "encouragement" field.`,
+		content: SYSTEM_PROMPT(theme),
 	},
 	{
 		role: "user",
@@ -59,10 +42,9 @@ let finalStory = "";
 
 while (true) {
 	const result = await generateText({
-		//model: "openai/gpt-5",
-		//model: openai.chat("gpt-5"),
-		model: openai.chat("gpt-5-mini"),
-		//model: openai.chat("gpt-4o"),
+		//model: "openai/gpt-5-mini",
+		//model: "anthropic/claude-4-sonnet",
+		model: "xai/grok-4",
 		messages,
 		experimental_output: Output.object({
 			schema: StorytimeSchema,
@@ -98,16 +80,11 @@ console.log("Here is the final story:");
 console.log(finalStory);
 
 const image = await generateImage({
+	//model: gateway.imageModel("xai:grok-2-vision"),
 	model: openai.image("gpt-image-1"),
-	//model: gateway.imageModel("openai:dall-e-3"),
-	prompt: `Generate an image of a children's storybook panel consisting of
-	4 to 6 panels with the following story.
-	
-	Include text in the panels to tell the story.
-	
-	Story:
-	${finalStory}`,
-	//providerOptions: { openai: { quality: "hd", style: "vivid" } }, // optional
+	//model: gateway.imageModel("xai:grok-2-image"), // provider:model
+	n: 1,
+	prompt: IMAGE_GEN_PROMPT(finalStory),
 });
 
 console.log(await terminalImage.buffer(image.images[0].uint8Array));

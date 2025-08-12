@@ -1,6 +1,7 @@
 import { openai } from "@ai-sdk/openai";
 import { FatalError } from "@vercel/workflow-core";
 import { experimental_generateImage as generateImage } from "ai";
+import { IMAGE_GEN_PROMPT } from "@/lib/prompt";
 import { slack } from "@/lib/slack";
 
 export async function generateStoryboardImage(
@@ -14,15 +15,7 @@ export async function generateStoryboardImage(
 	const image = await generateImage({
 		model: openai.image("gpt-image-1"),
 		n: 1,
-		prompt: `Generate an image of a children's storybook panel consisting of
-        3 panels with the following story.
-        
-        Include text in the panels to tell the story.
-        Please ensure that all panels are visible, and not being cut off.
-        Please ensure that the text is correct, legible, and using the correct names.
-        
-        Story:
-        ${finalStory}`,
+		prompt: IMAGE_GEN_PROMPT(finalStory),
 	});
 	console.timeEnd("Generating storyboard image");
 
