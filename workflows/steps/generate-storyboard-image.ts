@@ -75,8 +75,8 @@ export async function broadcastStoryboardImage(
 	await slack.chat.update({
 		channel: channelId,
 		ts: messageWithFile.ts,
+		text: "",
 		file_ids: [fileId],
 		reply_broadcast: true,
-		attachments: [],
 	});
 }
