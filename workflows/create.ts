@@ -93,6 +93,11 @@ export async function storytime(slashCommand: URLSearchParams) {
 		text: `${introText}\n\n> _${aiResponse.story}_`,
 	});
 
+	messages.push({
+		role: "assistant",
+		content: aiResponse.story,
+	});
+
 	// Subscribe to new messages in the thread
 	const webhook = getWebhook({
 		url: "/api/slack/webhook",
