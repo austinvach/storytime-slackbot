@@ -19,6 +19,7 @@ export async function generateStoryboardImage(
         
         Include text in the panels to tell the story.
         Please ensure that all panels are visible, and not being cut off.
+        Please ensure that the text is correct, legible, and using the correct names.
         
         Story:
         ${finalStory}`,
