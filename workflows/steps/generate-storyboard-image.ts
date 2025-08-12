@@ -15,7 +15,7 @@ export async function generateStoryboardImage(
 		model: openai.image("gpt-image-1"),
 		n: 1,
 		prompt: `Generate an image of a children's storybook panel consisting of
-        4 to 6 panels with the following story.
+        3 panels with the following story.
         
         Include text in the panels to tell the story.
         Please ensure that all panels are visible, and not being cut off.
