@@ -149,7 +149,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 	await Promise.all([
 		postSlackMessage({
 			channel: channelId,
-			text: `__Here is the final story:__\n\n${finalStory
+			text: `*Here is the final story:*\n\n${finalStory
 				.split("\n")
 				.map((line) => `> ${line ? `_${line}_` : ""}`)
 				.join("\n")}`,
