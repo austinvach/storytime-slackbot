@@ -4,7 +4,10 @@ import { FatalError, getWebhook } from "@vercel/workflow-core";
 
 // Steps
 import { generateStoryPiece } from "./steps/generate-story-piece";
-import { postSlackMessage } from "./steps/post-slack-message";
+import {
+	postSlackMessage,
+	updateSlackMessage,
+} from "./steps/post-slack-message";
 import { generateStoryboardImage } from "./steps/generate-storyboard-image";
 
 const SYSTEM_PROMPT = `
@@ -69,13 +72,20 @@ export async function storytime(slashCommand: URLSearchParams) {
 		},
 	];
 
+	// Create the initial top-level message in the channel with a placeholder
+	const introText = `It's storytime! I'll start the story and you continue it.`;
+	const { ts, message } = await postSlackMessage({
+		channel: channelId,
+		text: `${introText}\n\n> _Generating introduction…_ :thinking-hard:`,
+	});
+
 	// Ask the LLM to initiate the story
 	const aiResponse = await generateStoryPiece(messages);
 
-	// Create the initial top-level message in the channel
-	const { ts, message } = await postSlackMessage({
+	await updateSlackMessage({
 		channel: channelId,
-		text: `It's storytime! I'll start the story and you continue it.\n\n> _${aiResponse.story}_`,
+		ts,
+		text: `${introText}\n\n> _${aiResponse.story}_`,
 	});
 
 	// Subscribe to new messages in the thread
@@ -104,6 +114,13 @@ export async function storytime(slashCommand: URLSearchParams) {
 	while (true) {
 		// Wait for a user to post a message in the thread
 		const req = await webhook;
+
+		const { ts: encouragementTs } = await postSlackMessage({
+			channel: channelId,
+			text: "_Processing user input…_ :thinking-hard:",
+			thread_ts: ts,
+		});
+
 		const data = await req.json();
 
 		messages.push({
@@ -113,10 +130,11 @@ export async function storytime(slashCommand: URLSearchParams) {
 
 		// Submit user's message to the LLM and post the encouragement
 		const aiResponse = await generateStoryPiece(messages);
-		await postSlackMessage({
+
+		await updateSlackMessage({
 			channel: channelId,
+			ts: encouragementTs,
 			text: aiResponse.encouragement,
-			thread_ts: ts,
 		});
 
 		// If the LLM has decided that the story is complete, break the loop.

@@ -30,6 +30,7 @@ export async function generateStoryboardImage(
 		filename: "storyboard.png",
 		title: "Storyboard",
 	});
+	console.log(res);
 
 	if (!res.ok) {
 		throw new FatalError(`Failed to upload file: ${res.error}`);
