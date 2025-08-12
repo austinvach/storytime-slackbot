@@ -17,6 +17,10 @@ const StoryPieceSchema = z.object({
 export async function generateStoryPiece(messages: ModelMessage[]) {
 	"use step";
 
+	// Debugging
+	console.log(JSON.stringify(messages, null, 2));
+
+	console.time("Generating story piece");
 	const result = await generateText({
 		model: openai.chat("gpt-5-mini"),
 		messages,
@@ -24,6 +28,7 @@ export async function generateStoryPiece(messages: ModelMessage[]) {
 			schema: StoryPieceSchema,
 		}),
 	});
+	console.timeEnd("Generating story piece");
 
 	return result.experimental_output;
 }

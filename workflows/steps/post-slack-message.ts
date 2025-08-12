@@ -1,6 +1,9 @@
 import type {
+	ChatDeleteArguments,
 	ChatPostMessageArguments,
 	ChatUpdateArguments,
+	ReactionsAddArguments,
+	ReactionsRemoveArguments,
 } from "@slack/web-api";
 import { FatalError } from "@vercel/workflow-core";
 import { slack } from "@/lib/slack";
@@ -26,5 +29,37 @@ export async function updateSlackMessage(options: ChatUpdateArguments) {
 
 	if (!res.ok) {
 		throw new FatalError(`Failed to update message: ${res.error}`);
+	}
+}
+
+export async function deleteSlackMessage(options: ChatDeleteArguments) {
+	"use step";
+
+	const res = await slack.chat.delete(options);
+
+	if (!res.ok) {
+		throw new FatalError(`Failed to delete message: ${res.error}`);
+	}
+}
+
+export async function addReactionToMessage(options: ReactionsAddArguments) {
+	"use step";
+
+	const res = await slack.reactions.add(options);
+
+	if (!res.ok) {
+		throw new FatalError(`Failed to add reaction: ${res.error}`);
+	}
+}
+
+export async function removeReactionFromMessage(
+	options: ReactionsRemoveArguments,
+) {
+	"use step";
+
+	const res = await slack.reactions.remove(options);
+
+	if (!res.ok) {
+		throw new FatalError(`Failed to remove reaction: ${res.error}`);
 	}
 }

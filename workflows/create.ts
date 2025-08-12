@@ -5,7 +5,9 @@ import { FatalError, getWebhook } from "@vercel/workflow-core";
 // Steps
 import { generateStoryPiece } from "./steps/generate-story-piece";
 import {
+	addReactionToMessage,
 	postSlackMessage,
+	removeReactionFromMessage,
 	updateSlackMessage,
 } from "./steps/post-slack-message";
 import { generateStoryboardImage } from "./steps/generate-storyboard-image";
@@ -32,7 +34,7 @@ introduction, and make it interesting and engaging. Possible themes include (but
 - Mythology
 - Folklore
 
-After 3 to 5 iterations, the story should be complete and you will take the pieces
+After 2 to 3 iterations, the story should be complete and you will take the pieces
 of the story and polish it up
 to have a cohesive conclusion and report the final story to the user.
 
@@ -45,7 +47,10 @@ to the user to finish the story.
 The story
 should be in the style of a children's book, with a simple vocabulary and a
 clear and concise writing style. It should be short enough to be read aloud by
-a child, and fit in a 4 to 6 panel comic strip.
+a child, and fit in a 3 panel comic strip.
+
+Be sure to keep consistency with the characters. Do not change their names or descriptions
+between iterations.
 
 You don't need to provide the intermediate story contents, just the initial introduction
 and the final story in the "story" field (do not include information about the panel numbers).
@@ -114,14 +119,14 @@ export async function storytime(slashCommand: URLSearchParams) {
 	while (true) {
 		// Wait for a user to post a message in the thread
 		const req = await webhook;
-
-		const { ts: encouragementTs } = await postSlackMessage({
-			channel: channelId,
-			text: "_Processing user input…_ :thinking-hard:",
-			thread_ts: ts,
-		});
-
 		const data = await req.json();
+
+		// Add a thinking-hard reaction to the user's message
+		await addReactionToMessage({
+			channel: channelId,
+			timestamp: data.ts,
+			name: "thinking-hard",
+		});
 
 		messages.push({
 			role: "user",
@@ -131,11 +136,18 @@ export async function storytime(slashCommand: URLSearchParams) {
 		// Submit user's message to the LLM and post the encouragement
 		const aiResponse = await generateStoryPiece(messages);
 
-		await updateSlackMessage({
-			channel: channelId,
-			ts: encouragementTs,
-			text: aiResponse.encouragement,
-		});
+		await Promise.all([
+			postSlackMessage({
+				channel: channelId,
+				thread_ts: ts,
+				text: aiResponse.encouragement,
+			}),
+			removeReactionFromMessage({
+				channel: channelId,
+				timestamp: data.ts,
+				name: "thinking-hard",
+			}),
+		]);
 
 		// If the LLM has decided that the story is complete, break the loop.
 		// No more user messages will be processed after this

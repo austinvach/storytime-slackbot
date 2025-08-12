@@ -10,6 +10,7 @@ export async function generateStoryboardImage(
 ) {
 	"use step";
 
+	console.time("Generating storyboard image");
 	const image = await generateImage({
 		model: openai.image("gpt-image-1"),
 		n: 1,
@@ -22,7 +23,9 @@ export async function generateStoryboardImage(
         Story:
         ${finalStory}`,
 	});
+	console.timeEnd("Generating storyboard image");
 
+	console.time("Uploading image to Slack");
 	const res = await slack.files.uploadV2({
 		channel_id: channelId,
 		thread_ts: threadTs,
@@ -30,6 +33,7 @@ export async function generateStoryboardImage(
 		filename: "storyboard.png",
 		title: "Storyboard",
 	});
+	console.timeEnd("Uploading image to Slack");
 
 	if (!res.ok) {
 		throw new FatalError(`Failed to upload file: ${res.error}`);
