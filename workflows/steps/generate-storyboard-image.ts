@@ -73,6 +73,8 @@ export async function deleteStoryboardImageMessage(
 		throw new FatalError("Failed to find bot message in thread");
 	}
 
+	console.log(newestBotMessage);
+
 	const deletion = await slack.chat.delete({
 		channel: channelId,
 		ts: newestBotMessage.ts,
