@@ -24,15 +24,20 @@ export async function generateStoryboardImage(
 	});
 
 	const res = await slack.files.uploadV2({
-		channel_id: channelId,
-		thread_ts: threadTs,
+		//channel_id: channelId,
+		//thread_ts: threadTs,
 		file: Buffer.from(image.images[0].uint8Array),
 		filename: "storyboard.png",
 		title: "Storyboard",
 	});
-	console.log(res);
 
 	if (!res.ok) {
 		throw new FatalError(`Failed to upload file: ${res.error}`);
 	}
+
+	// @ts-expect-error - files is not typed
+	console.log(res.files);
+
+	// @ts-expect-error - files is not typed
+	return res.files[0].files[0].id as string;
 }

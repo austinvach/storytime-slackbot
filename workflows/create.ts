@@ -145,17 +145,27 @@ export async function storytime(slashCommand: URLSearchParams) {
 		}
 	}
 
+	const finalText = `*Here is the final story:*\n\n${finalStory
+		.split("\n")
+		.map((line) => `> ${line ? `_${line}_` : ""}`)
+		.join("\n")}`;
+
 	// Post the final story and generate the storyboard image
-	await Promise.all([
+	const [{ ts: finalTs }, fileId] = await Promise.all([
 		postSlackMessage({
 			channel: channelId,
-			text: `*Here is the final story:*\n\n${finalStory
-				.split("\n")
-				.map((line) => `> ${line ? `_${line}_` : ""}`)
-				.join("\n")}`,
+			text: `${finalText}\n\n> _Generating storyboard image…_ :thinking-hard:`,
 			thread_ts: ts,
 			reply_broadcast: true,
 		}),
 		generateStoryboardImage(channelId, ts, finalStory),
 	]);
+
+	// Update the final story message with the storyboard image
+	await updateSlackMessage({
+		channel: channelId,
+		ts: finalTs,
+		text: `${finalText}`,
+		file_ids: [fileId],
+	});
 }
