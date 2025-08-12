@@ -11,7 +11,7 @@ import {
 	updateSlackMessage,
 } from "./steps/post-slack-message";
 import {
-	deleteStoryboardImageMessage,
+	broadcastStoryboardImage,
 	generateStoryboardImage,
 } from "./steps/generate-storyboard-image";
 import { SYSTEM_PROMPT, THEMES } from "../lib/prompt";
@@ -153,14 +153,13 @@ export async function storytime(slashCommand: URLSearchParams) {
 		generateStoryboardImage(channelId, ts, finalStory),
 	]);
 
-	// Update the final story message with the storyboard image
+	// Update the final story message to remove the "generating storyboard image" message
 	await updateSlackMessage({
 		channel: channelId,
 		ts: finalTs,
 		text: finalText,
-		file_ids: [fileId],
 	});
 
-	// Delete the temporary message that contains the storyboard image
-	await deleteStoryboardImageMessage(channelId, ts, botId);
+	// Broadcast the storyboard image to the thread
+	await broadcastStoryboardImage(channelId, ts, fileId);
 }

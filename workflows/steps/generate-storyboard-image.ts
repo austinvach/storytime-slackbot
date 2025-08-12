@@ -39,10 +39,10 @@ export async function generateStoryboardImage(
 	return res.files[0].files[0].id as string;
 }
 
-export async function deleteStoryboardImageMessage(
+export async function broadcastStoryboardImage(
 	channelId: string,
 	threadTs: string,
-	botId: string,
+	fileId: string,
 ) {
 	"use step";
 
@@ -61,38 +61,22 @@ export async function deleteStoryboardImageMessage(
 	}
 
 	// Find newest message posted by this bot in the thread
-	const newestBotMessage = messages
-		.filter(
-			(m) =>
-				(m.bot_id === botId || m.user === botId) && typeof m.ts === "string",
-		)
-		.sort((a, b) => parseFloat(b.ts as string) - parseFloat(a.ts as string))[0];
+	const messageWithFile = messages.find((m) =>
+		m.files?.find((f) => f.id === fileId),
+	);
 
-	console.log(messages);
+	console.log(messageWithFile);
 
-	// Nothing to delete
-	if (!newestBotMessage?.ts) {
-		throw new FatalError("Failed to find bot message in thread");
+	if (!messageWithFile?.ts) {
+		// Non-fatal error, so that this step gets retried
+		throw new Error("Failed to find bot message in thread");
 	}
 
-	// Avoid edge case where the bot message is the final story message.
-	// We'll retry the step because the "file" one isn't being returned yet
-	if (newestBotMessage.text?.includes("Here is the final story")) {
-		throw new Error(
-			"Didn't find the storyboard image in the thread. Retrying…",
-		);
-	}
-
-	console.log(newestBotMessage);
-
-	const deletion = await slack.chat.delete({
+	await slack.chat.update({
 		channel: channelId,
-		ts: newestBotMessage.ts,
+		ts: messageWithFile.ts,
+		file_ids: [fileId],
+		reply_broadcast: true,
+		attachments: [],
 	});
-
-	if (!deletion.ok) {
-		throw new FatalError(
-			`Failed to delete message ${newestBotMessage.ts}: ${deletion.error}`,
-		);
-	}
 }
