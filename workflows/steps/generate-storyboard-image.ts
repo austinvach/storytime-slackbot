@@ -38,3 +38,49 @@ export async function generateStoryboardImage(
 	// @ts-expect-error - files is not typed
 	return res.files[0].files[0].id as string;
 }
+
+export async function deleteStoryboardImageMessage(
+	channelId: string,
+	threadTs: string,
+	botId: string,
+) {
+	"use step";
+
+	// Fetch replies in the thread
+	const replies = await slack.conversations.replies({
+		channel: channelId,
+		ts: threadTs,
+		limit: 200,
+		inclusive: true,
+	});
+
+	const { messages } = replies;
+
+	if (!replies.ok || !messages || messages.length === 0) {
+		throw new FatalError(`Failed to fetch thread replies: ${replies.error}`);
+	}
+
+	// Find newest message posted by this bot in the thread
+	const newestBotMessage = messages
+		.filter(
+			(m) =>
+				(m.bot_id === botId || m.user === botId) && typeof m.ts === "string",
+		)
+		.sort((a, b) => parseFloat(b.ts as string) - parseFloat(a.ts as string))[0];
+
+	// Nothing to delete
+	if (!newestBotMessage?.ts) {
+		throw new FatalError("Failed to find bot message in thread");
+	}
+
+	const deletion = await slack.chat.delete({
+		channel: channelId,
+		ts: newestBotMessage.ts,
+	});
+
+	if (!deletion.ok) {
+		throw new FatalError(
+			`Failed to delete message ${newestBotMessage.ts}: ${deletion.error}`,
+		);
+	}
+}

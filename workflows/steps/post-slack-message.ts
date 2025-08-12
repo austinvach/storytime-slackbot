@@ -1,5 +1,4 @@
 import type {
-	ChatDeleteArguments,
 	ChatPostMessageArguments,
 	ChatUpdateArguments,
 	ReactionsAddArguments,
@@ -29,16 +28,6 @@ export async function updateSlackMessage(options: ChatUpdateArguments) {
 
 	if (!res.ok) {
 		throw new FatalError(`Failed to update message: ${res.error}`);
-	}
-}
-
-export async function deleteSlackMessage(options: ChatDeleteArguments) {
-	"use step";
-
-	const res = await slack.chat.delete(options);
-
-	if (!res.ok) {
-		throw new FatalError(`Failed to delete message: ${res.error}`);
 	}
 }
 

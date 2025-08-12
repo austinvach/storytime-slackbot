@@ -10,7 +10,10 @@ import {
 	removeReactionFromMessage,
 	updateSlackMessage,
 } from "./steps/post-slack-message";
-import { generateStoryboardImage } from "./steps/generate-storyboard-image";
+import {
+	deleteStoryboardImageMessage,
+	generateStoryboardImage,
+} from "./steps/generate-storyboard-image";
 import { SYSTEM_PROMPT, THEMES } from "../lib/prompt";
 
 export async function storytime(slashCommand: URLSearchParams) {
@@ -46,6 +49,11 @@ export async function storytime(slashCommand: URLSearchParams) {
 		text: `${introText}\n\n> _Generating introduction…_ :thinking-hard:`,
 	});
 
+	const botId = message?.user;
+	if (!botId) {
+		throw new FatalError("Failed to get bot ID");
+	}
+
 	// Ask the LLM to initiate the story
 	const aiResponse = await generateStoryPiece(messages, model);
 
@@ -70,7 +78,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 				thread_ts: z.literal(ts),
 
 				// Exclude messages from the bot itself
-				user: z.string().regex(new RegExp(`^(?!${message?.user}$)`)),
+				user: z.string().regex(new RegExp(`^(?!${botId}$)`)),
 			}),
 		}),
 	});
@@ -102,6 +110,11 @@ export async function storytime(slashCommand: URLSearchParams) {
 
 		// Submit user's message to the LLM and post the encouragement
 		const aiResponse = await generateStoryPiece(messages, model);
+
+		messages.push({
+			role: "assistant",
+			content: aiResponse.story,
+		});
 
 		await Promise.all([
 			postSlackMessage({
@@ -140,12 +153,14 @@ export async function storytime(slashCommand: URLSearchParams) {
 		generateStoryboardImage(channelId, ts, finalStory),
 	]);
 
-	// Update the final story message with the storyboard image,
-	// and delete the temporary message that contains the storyboard image
+	// Update the final story message with the storyboard image
 	await updateSlackMessage({
 		channel: channelId,
 		ts: finalTs,
-		text: `${finalText}`,
+		text: finalText,
 		file_ids: [fileId],
 	});
+
+	// Delete the temporary message that contains the storyboard image
+	await deleteStoryboardImageMessage(channelId, ts, botId);
 }
