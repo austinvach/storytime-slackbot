@@ -72,11 +72,10 @@ export async function broadcastStoryboardImage(
 		throw new Error("Failed to find bot message in thread");
 	}
 
+	// @ts-expect-error - Specifying only `reply_broadcast` is not properly typed
 	await slack.chat.update({
 		channel: channelId,
 		ts: messageWithFile.ts,
-		text: "",
-		file_ids: [fileId],
 		reply_broadcast: true,
 	});
 }
