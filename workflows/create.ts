@@ -42,20 +42,22 @@ export async function storytime(slashCommand: URLSearchParams) {
 		},
 	];
 
-	// Create the initial top-level message in the channel with a placeholder
 	const introText = `It's storytime! I'll start the story and you continue it.`;
-	const { ts, message } = await postSlackMessage({
-		channel: channelId,
-		text: `${introText}\n\n> _Generating introduction…_ :thinking-hard:`,
-	});
+
+	const [{ ts, message }, aiResponse] = await Promise.all([
+		// Create the initial top-level message in the channel with a placeholder
+		postSlackMessage({
+			channel: channelId,
+			text: `${introText}\n\n> _Generating introduction…_ :thinking-hard:`,
+		}),
+		// Ask the LLM to initiate the story
+		generateStoryPiece(messages, model),
+	]);
 
 	const botId = message?.user;
 	if (!botId) {
 		throw new FatalError("Failed to get bot ID");
 	}
-
-	// Ask the LLM to initiate the story
-	const aiResponse = await generateStoryPiece(messages, model);
 
 	await updateSlackMessage({
 		channel: channelId,

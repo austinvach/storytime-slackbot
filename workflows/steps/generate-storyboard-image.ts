@@ -33,8 +33,6 @@ export async function generateStoryboardImage(
 		throw new FatalError(`Failed to upload file: ${res.error}`);
 	}
 
-	console.log(JSON.stringify(res, null, 2));
-
 	// @ts-expect-error - files is not typed
 	return res.files[0].files[0].id as string;
 }
@@ -65,11 +63,9 @@ export async function broadcastStoryboardImage(
 		m.files?.find((f) => f.id === fileId),
 	);
 
-	console.log(messageWithFile);
-
 	if (!messageWithFile?.ts) {
 		// Non-fatal error, so that this step gets retried
-		throw new Error("Failed to find bot message in thread");
+		throw new Error("Failed to find bot message in thread - retrying…");
 	}
 
 	// @ts-expect-error - Specifying only `reply_broadcast` is not properly typed
