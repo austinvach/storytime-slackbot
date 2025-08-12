@@ -35,8 +35,7 @@ export async function generateStoryboardImage(
 		throw new FatalError(`Failed to upload file: ${res.error}`);
 	}
 
-	// @ts-expect-error - files is not typed
-	console.log(res.files);
+	console.log(JSON.stringify(res, null, 2));
 
 	// @ts-expect-error - files is not typed
 	return res.files[0].files[0].id as string;

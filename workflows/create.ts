@@ -161,7 +161,8 @@ export async function storytime(slashCommand: URLSearchParams) {
 		generateStoryboardImage(channelId, ts, finalStory),
 	]);
 
-	// Update the final story message with the storyboard image
+	// Update the final story message with the storyboard image,
+	// and delete the temporary message that contains the storyboard image
 	await updateSlackMessage({
 		channel: channelId,
 		ts: finalTs,
