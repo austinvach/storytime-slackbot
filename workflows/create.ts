@@ -124,7 +124,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 		// Add a thinking-hard reaction to the user's message
 		await addReactionToMessage({
 			channel: channelId,
-			timestamp: data.ts,
+			timestamp: data.event.ts,
 			name: "thinking-hard",
 		});
 
@@ -144,7 +144,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 			}),
 			removeReactionFromMessage({
 				channel: channelId,
-				timestamp: data.ts,
+				timestamp: data.event.ts,
 				name: "thinking-hard",
 			}),
 		]);
