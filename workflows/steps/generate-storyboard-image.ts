@@ -24,8 +24,8 @@ export async function generateStoryboardImage(
 	});
 
 	const res = await slack.files.uploadV2({
-		//channel_id: channelId,
-		//thread_ts: threadTs,
+		channel_id: channelId,
+		thread_ts: threadTs,
 		file: Buffer.from(image.images[0].uint8Array),
 		filename: "storyboard.png",
 		title: "Storyboard",

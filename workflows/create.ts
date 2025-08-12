@@ -154,7 +154,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 	const [{ ts: finalTs }, fileId] = await Promise.all([
 		postSlackMessage({
 			channel: channelId,
-			text: `${finalText}\n\n> _Generating storyboard image…_ :thinking-hard:`,
+			text: `${finalText}\n\n_Generating storyboard image…_ :thinking-hard:`,
 			thread_ts: ts,
 			reply_broadcast: true,
 		}),
