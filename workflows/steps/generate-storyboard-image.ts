@@ -75,6 +75,14 @@ export async function deleteStoryboardImageMessage(
 		throw new FatalError("Failed to find bot message in thread");
 	}
 
+	// Avoid edge case where the bot message is the final story message.
+	// We'll retry the step because the "file" one isn't being returned yet
+	if (newestBotMessage.text?.includes("Here is the final story")) {
+		throw new Error(
+			"Didn't find the storyboard image in the thread. Retrying…",
+		);
+	}
+
 	console.log(newestBotMessage);
 
 	const deletion = await slack.chat.delete({
