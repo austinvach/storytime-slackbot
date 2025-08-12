@@ -68,6 +68,8 @@ export async function deleteStoryboardImageMessage(
 		)
 		.sort((a, b) => parseFloat(b.ts as string) - parseFloat(a.ts as string))[0];
 
+	console.log(messages);
+
 	// Nothing to delete
 	if (!newestBotMessage?.ts) {
 		throw new FatalError("Failed to find bot message in thread");
