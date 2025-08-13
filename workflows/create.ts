@@ -1,6 +1,7 @@
 import type { ModelMessage } from "ai";
 import { z } from "zod";
 import { FatalError, getWebhook } from "@vercel/workflow-core";
+// Look ma no queues or kv!
 
 // Steps
 import { generateStoryPiece } from "./steps/generate-story-piece";
@@ -19,18 +20,18 @@ import { SYSTEM_PROMPT, THEMES } from "../lib/prompt";
 export async function storytime(slashCommand: URLSearchParams) {
 	"use workflow";
 
-	let finalStory = "";
-
+	// Initialize the workflow
 	const channelId = slashCommand.get("channel_id");
 	if (!channelId) {
 		throw new FatalError("`channel_id` is required");
 	}
 
-	// TODO: make these configurable in the slash command
 	const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
 	const model = "meta/llama-4-scout";
 	console.log({ theme, model });
 
+	// ...including local state like the entire message history
+	let finalStory = "";
 	const messages: ModelMessage[] = [
 		{
 			role: "system",
