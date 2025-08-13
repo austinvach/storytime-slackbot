@@ -98,20 +98,22 @@ export async function storytime(slashCommand: URLSearchParams) {
 		const req = await webhook;
 		const data = await req.json();
 
-		// Add a thinking-hard reaction to the user's message
-		await addReactionToMessage({
-			channel: channelId,
-			timestamp: data.event.ts,
-			name: "thinking-hard",
-		});
-
 		messages.push({
 			role: "user",
 			content: data.event.text,
 		});
 
-		// Submit user's message to the LLM and post the encouragement
-		const aiResponse = await generateStoryPiece(messages, model);
+		const [aiResponse] = await Promise.all([
+			// Submit user's message to the LLM to continue the story
+			generateStoryPiece(messages, model),
+
+			// Add a thinking-hard reaction to the user's message
+			addReactionToMessage({
+				channel: channelId,
+				timestamp: data.event.ts,
+				name: "thinking-hard",
+			}),
+		]);
 
 		messages.push({
 			role: "assistant",
@@ -132,7 +134,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 		]);
 
 		// If the LLM has decided that the story is complete, break the loop.
-		// No more user messages will be processed after this
+		// No more user messages will be processed in the thread after this.
 		if (aiResponse.done) {
 			finalStory = aiResponse.story;
 			break;
