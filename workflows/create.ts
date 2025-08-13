@@ -92,10 +92,9 @@ export async function storytime(slashCommand: URLSearchParams) {
 		thread_ts: ts,
 	});
 
-	// Loop until the LLM decides that the story is complete
-	while (true) {
-		// Wait for a user to post a message in the thread
-		const req = await webhook;
+	// Process user messages in the thread (via the webhook) in
+	// a loop until the LLM decides that the story is complete
+	for await (const req of webhook) {
 		const data = await req.json();
 
 		messages.push({
@@ -103,11 +102,9 @@ export async function storytime(slashCommand: URLSearchParams) {
 			content: data.event.text,
 		});
 
+		// Submit user's message to the LLM to continue the story
 		const [aiResponse] = await Promise.all([
-			// Submit user's message to the LLM to continue the story
 			generateStoryPiece(messages, model),
-
-			// Add a thinking-hard reaction to the user's message
 			addReactionToMessage({
 				channel: channelId,
 				timestamp: data.event.ts,
