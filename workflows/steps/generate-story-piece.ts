@@ -29,6 +29,7 @@ export async function generateStoryPiece(
 		experimental_output: Output.object({
 			schema: StoryPieceSchema,
 		}),
+		experimental_telemetry: { isEnabled: true },
 	});
 	console.timeEnd("Generating story piece");
 
