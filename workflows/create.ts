@@ -19,7 +19,7 @@ import { SYSTEM_PROMPT, THEMES } from "../lib/prompt";
 export async function storytime(slashCommand: URLSearchParams) {
 	"use workflow";
 
-	let finalStory: string | undefined;
+	let finalStory = "";
 
 	const channelId = slashCommand.get("channel_id");
 	if (!channelId) {
