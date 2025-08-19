@@ -27,15 +27,16 @@ export async function storytime(slashCommand: URLSearchParams) {
 	}
 
 	const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
+	const theme2 = THEMES[Math.floor(Math.random() * THEMES.length)];
 	const model = "meta/llama-4-scout";
-	console.log({ theme, model });
+	console.log({ theme, theme2, model });
 
 	// ...including local state like the entire message history
 	let finalStory = "";
 	const messages: ModelMessage[] = [
 		{
 			role: "system",
-			content: SYSTEM_PROMPT(theme),
+			content: SYSTEM_PROMPT(theme, theme2),
 		},
 		{
 			role: "user",

@@ -19,12 +19,14 @@ const rl = readline.createInterface({
 });
 
 const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
+const theme2 = THEMES[Math.floor(Math.random() * THEMES.length)];
 console.log(`Theme: ${theme}`);
+console.log(`Theme2: ${theme2}`);
 
 const messages: ModelMessage[] = [
 	{
 		role: "system",
-		content: SYSTEM_PROMPT(theme),
+		content: SYSTEM_PROMPT(theme, theme2),
 	},
 	{
 		role: "user",
