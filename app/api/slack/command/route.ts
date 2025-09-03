@@ -1,5 +1,5 @@
 import { waitUntil } from "@vercel/functions";
-import { start } from "@vercel/workflow-core/runtime";
+import { storytime } from "@/workflows/create";
 
 export async function POST(req: Request) {
 	const rawBody = await req.text();
@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 	waitUntil(
 		(async () => {
 			console.log("Starting Storytime workflow");
-			const w = await start("storytime", [formData]);
+			const w = await storytime(formData);
 			console.log(w);
 		})(),
 	);
