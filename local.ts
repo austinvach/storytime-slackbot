@@ -2,14 +2,8 @@ import dotenv from "dotenv";
 dotenv.config({ path: ".env.local" });
 
 import readline from "node:readline/promises";
-import {
-	experimental_generateImage as generateImage,
-	generateText,
-	type ModelMessage,
-	Output,
-} from "ai";
+import { generateText, type ModelMessage, Output } from "ai";
 import { z } from "zod";
-import { openai } from "@ai-sdk/openai";
 import terminalImage from "terminal-image";
 import { SYSTEM_PROMPT, THEMES, IMAGE_GEN_PROMPT } from "./lib/prompt.ts";
 
@@ -53,7 +47,6 @@ while (true) {
 			schema: StorytimeSchema,
 		}),
 	});
-	//console.log(result.experimental_output?.encouragement);
 	console.log(result.experimental_output);
 
 	messages.push({
@@ -82,12 +75,9 @@ console.log("");
 console.log("Here is the final story:");
 console.log(finalStory);
 
-const image = await generateImage({
-	//model: gateway.imageModel("xai:grok-2-vision"),
-	model: openai.image("gpt-image-1"),
-	//model: gateway.imageModel("xai:grok-2-image"), // provider:model
-	n: 1,
+const result = await generateText({
+	model: "google/gemini-2.5-flash-image-preview",
 	prompt: IMAGE_GEN_PROMPT(finalStory),
 });
 
-console.log(await terminalImage.buffer(image.images[0].uint8Array));
+console.log(await terminalImage.buffer(result.files[0].uint8Array));

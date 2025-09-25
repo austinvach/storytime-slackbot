@@ -1,6 +1,5 @@
-import { openai } from "@ai-sdk/openai";
 import { FatalError } from "@vercel/workflow-core";
-import { experimental_generateImage as generateImage } from "ai";
+import { generateText } from "ai";
 import { IMAGE_GEN_PROMPT } from "@/lib/prompt";
 import { slack } from "@/lib/slack";
 
@@ -12,9 +11,8 @@ export async function generateStoryboardImage(
 	"use step";
 
 	console.time("Generating storyboard image");
-	const image = await generateImage({
-		model: openai.image("gpt-image-1"),
-		n: 1,
+	const result = await generateText({
+		model: "google/gemini-2.5-flash-image-preview",
 		prompt: IMAGE_GEN_PROMPT(finalStory),
 	});
 	console.timeEnd("Generating storyboard image");
@@ -23,7 +21,7 @@ export async function generateStoryboardImage(
 	const res = await slack.files.uploadV2({
 		channel_id: channelId,
 		thread_ts: threadTs,
-		file: Buffer.from(image.images[0].uint8Array),
+		file: Buffer.from(result.files[0].uint8Array),
 		filename: "storyboard.png",
 		title: "Storyboard",
 	});

@@ -50,7 +50,7 @@ When the story is complete, say a light hearted comment about the story in the "
 export const IMAGE_GEN_PROMPT = (
 	finalStory: string,
 ) => `Generate an image of a children's storybook panel consisting of
-exactly 3 (three) panels with the following story.
+4 to 5 (four to five) panels with the following story.
 
 Include text in the panels to tell the story.
 Please ensure that all panels are visible, and not being cut off.
