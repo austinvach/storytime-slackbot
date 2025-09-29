@@ -75,6 +75,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 	// Subscribe to new messages in the thread
 	const webhook = getWebhook({
 		url: "/api/slack/webhook",
+		// @ts-expect-error bad type
 		body: z.object({
 			event: z.object({
 				type: z.literal("message"),
