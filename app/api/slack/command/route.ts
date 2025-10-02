@@ -1,18 +1,20 @@
 import { waitUntil } from "@vercel/functions";
-import { storytime } from "@/workflows/create";
 import { start } from "@vercel/workflow-core/runtime";
+import { storytime } from "@/workflows/create";
+
+async function startStorytime(formData: URLSearchParams) {
+	console.log("Starting Storytime workflow");
+	const w = await start(storytime, [formData]);
+	console.log(w);
+}
 
 export async function POST(req: Request) {
 	const rawBody = await req.text();
 	const formData = new URLSearchParams(rawBody);
 
-	waitUntil(
-		(async () => {
-			console.log("Starting Storytime workflow");
-			const w = await start(storytime, [formData]);
-			console.log(w);
-		})(),
-	);
+	// We start the workflow in the background since
+	// Slack expects a response immediately
+	waitUntil(startStorytime(formData));
 
 	return new Response(`Let's create a story!`);
 }

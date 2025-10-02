@@ -1,21 +1,26 @@
+import { defineHook, FatalError } from "@vercel/workflow-core";
 import type { ModelMessage } from "ai";
-import { z } from "zod";
-import { FatalError, getWebhook } from "@vercel/workflow-core";
+import { SYSTEM_PROMPT, THEMES } from "../lib/prompt";
+
 // Look ma no queues or kv!
 
 // Steps
 import { generateStoryPiece } from "./steps/generate-story-piece";
+import {
+	broadcastStoryboardImage,
+	generateStoryboardImage,
+} from "./steps/generate-storyboard-image";
 import {
 	addReactionToMessage,
 	postSlackMessage,
 	removeReactionFromMessage,
 	updateSlackMessage,
 } from "./steps/post-slack-message";
-import {
-	broadcastStoryboardImage,
-	generateStoryboardImage,
-} from "./steps/generate-storyboard-image";
-import { SYSTEM_PROMPT, THEMES } from "../lib/prompt";
+
+export const slackMessageHook = defineHook<{
+	text: string;
+	ts: string;
+}>();
 
 export async function storytime(slashCommand: URLSearchParams) {
 	"use workflow";
@@ -73,19 +78,8 @@ export async function storytime(slashCommand: URLSearchParams) {
 	});
 
 	// Subscribe to new messages in the thread
-	const webhook = getWebhook({
-		url: "/api/slack/webhook",
-		// @ts-expect-error bad type
-		body: z.object({
-			event: z.object({
-				type: z.literal("message"),
-				channel: z.literal(channelId),
-				thread_ts: z.literal(ts),
-
-				// Exclude messages from the bot itself
-				user: z.string().regex(new RegExp(`^(?!${botId}$)`)),
-			}),
-		}),
+	const slackMessageEvent = slackMessageHook.create({
+		token: `slack-message-webhook:${channelId}:${ts}`,
 	});
 
 	// Post the initial encouragement message to start the thread
@@ -97,12 +91,10 @@ export async function storytime(slashCommand: URLSearchParams) {
 
 	// Process user messages in the thread (via the webhook) in
 	// a loop until the LLM decides that the story is complete
-	for await (const req of webhook) {
-		const data = await req.json();
-
+	for await (const data of slackMessageEvent) {
 		messages.push({
 			role: "user",
-			content: data.event.text,
+			content: data.text,
 		});
 
 		// Submit user's message to the LLM to continue the story
@@ -110,7 +102,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 			generateStoryPiece(messages, model),
 			addReactionToMessage({
 				channel: channelId,
-				timestamp: data.event.ts,
+				timestamp: data.ts,
 				name: "thinking-hard",
 			}),
 		]);
@@ -128,7 +120,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 			}),
 			removeReactionFromMessage({
 				channel: channelId,
-				timestamp: data.event.ts,
+				timestamp: data.ts,
 				name: "thinking-hard",
 			}),
 		]);

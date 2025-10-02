@@ -1,7 +1,18 @@
-import { handleWebhook } from "@vercel/workflow-core/runtime";
+import { z } from "zod";
+import { slackMessageHook } from "@/workflows/create";
+
+const slackMessageSchema = z.object({
+	event: z.object({
+		type: z.literal("message"),
+		channel: z.string(),
+		thread_ts: z.string(),
+		text: z.string(),
+		ts: z.string(),
+	}),
+});
 
 export async function POST(req: Request) {
-	const body = await req.clone().json();
+	const body = await req.json();
 
 	console.log(body);
 
@@ -17,5 +28,17 @@ export async function POST(req: Request) {
 	// TODO: validate webhook body
 	// https://api.slack.com/authentication/verifying-requests-from-slack
 
-	return handleWebhook(req);
+	const parsedBody = slackMessageSchema.safeParse(body);
+	if (parsedBody.success) {
+		const { channel, thread_ts } = parsedBody.data.event;
+		const token = `slack-message-webhook:${channel}:${thread_ts}`;
+		const hook = await slackMessageHook.resume(token, parsedBody.data.event);
+		if (hook) {
+			console.log(`Hook resumed for token: ${token} (${hook.runId})`);
+		} else {
+			console.log(`No hook found for token: ${token}`);
+		}
+	}
+
+	return new Response("OK");
 }
