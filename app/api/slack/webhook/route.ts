@@ -8,6 +8,7 @@ const slackMessageSchema = z.object({
 		thread_ts: z.string(),
 		text: z.string(),
 		ts: z.string(),
+		bot_id: z.string().optional(),
 	}),
 });
 
@@ -30,13 +31,17 @@ export async function POST(req: Request) {
 
 	const parsedBody = slackMessageSchema.safeParse(body);
 	if (parsedBody.success) {
-		const { channel, thread_ts } = parsedBody.data.event;
-		const token = `slack-message-webhook:${channel}:${thread_ts}`;
-		const hook = await slackMessageHook.resume(token, parsedBody.data.event);
-		if (hook) {
-			console.log(`Hook resumed for token: ${token} (${hook.runId})`);
+		const { channel, thread_ts, bot_id } = parsedBody.data.event;
+		if (bot_id) {
+			console.log(`Skipping bot message`);
 		} else {
-			console.log(`No hook found for token: ${token}`);
+			const token = `slack-message-webhook:${channel}:${thread_ts}`;
+			const hook = await slackMessageHook.resume(token, parsedBody.data.event);
+			if (hook) {
+				console.log(`Hook resumed for token: ${token} (${hook.runId})`);
+			} else {
+				console.log(`No hook found for token: ${token}`);
+			}
 		}
 	}
 
