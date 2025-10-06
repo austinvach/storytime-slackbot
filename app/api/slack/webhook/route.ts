@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 	if (parsedBody.success) {
 		const { channel, thread_ts, bot_id } = parsedBody.data.event;
 		if (bot_id) {
-			console.log(`Skipping bot message`);
+			console.log(`Ignoring bot message`);
 		} else {
 			const token = `slack-message-webhook:${channel}:${thread_ts}`;
 			const hook = await slackMessageHook.resume(token, parsedBody.data.event);

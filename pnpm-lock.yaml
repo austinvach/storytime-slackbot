@@ -18,11 +18,11 @@ importers:
         specifier: ^1.13.0
         version: 1.13.1(@opentelemetry/api-logs@0.57.2)(@opentelemetry/api@1.9.0)(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/resources@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-logs@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-metrics@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))
       '@vercel/workflow-core':
-        specifier: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-core.tgz
-        version: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-core.tgz(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/node@20.19.19)
+        specifier: 0.0.1-alpha.29
+        version: 0.0.1-alpha.29(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/node@20.19.19)
       '@vercel/workflow-next':
-        specifier: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-next.tgz
-        version: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-next.tgz(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)(next@15.4.6(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        specifier: 0.0.1-alpha.39
+        version: 0.0.1-alpha.39(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)(next@15.4.6(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       ai:
         specifier: ^5.0.52
         version: 5.0.59(zod@4.1.11)
@@ -1595,55 +1595,47 @@ packages:
     engines: {node: '>=20.0.0'}
     hasBin: true
 
-  '@vercel/swc-plugin-workflow@https://workflow-docs-gz89ripsb.vercel.sh/vercel-swc-plugin-workflow.tgz':
-    resolution: {tarball: https://workflow-docs-gz89ripsb.vercel.sh/vercel-swc-plugin-workflow.tgz}
-    version: 0.0.1-alpha.5-2a8a973
+  '@vercel/swc-plugin-workflow@0.0.1-alpha.5':
+    resolution: {integrity: sha512-/uUjMq5wUDjg1U1CoC1tixp78w2EK2jalqnHT9sDp2YoAkQMChqBcjw9FPPhriXCSXzD0LUJy7kZP5ERNO8QZA==}
     peerDependencies:
       '@swc/core': 1.11.24
 
-  '@vercel/workflow-cli@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-cli.tgz':
-    resolution: {tarball: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-cli.tgz}
-    version: 0.0.1-alpha.35-2a8a973
+  '@vercel/workflow-cli@0.0.1-alpha.38':
+    resolution: {integrity: sha512-OINAvF7nXwnlwSdxzoiqhrtBaT6nCWvoRlyJA6qMRjjPll0R9AQ1Mm9OBHBAL+7CHAnlBHY4eBxl/uykt1cECg==}
     hasBin: true
 
-  '@vercel/workflow-core@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-core.tgz':
-    resolution: {tarball: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-core.tgz}
-    version: 0.0.1-alpha.26-2a8a973
+  '@vercel/workflow-core@0.0.1-alpha.29':
+    resolution: {integrity: sha512-9T5CsHHBi5On9BIhw9wm9mFhkC9jWw0xPs8Oh3OWJDBTzvUdG5bJ9tE0eG3ko7hu/uWBTLyG0VZ/y5XOTjftvA==}
     peerDependencies:
       '@opentelemetry/api': '1'
     peerDependenciesMeta:
       '@opentelemetry/api':
         optional: true
 
-  '@vercel/workflow-next@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-next.tgz':
-    resolution: {tarball: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-next.tgz}
-    version: 0.0.1-alpha.36-2a8a973
+  '@vercel/workflow-next@0.0.1-alpha.39':
+    resolution: {integrity: sha512-WGHaaFwwBuJYgNjul6ZAFRwEp4Zoaw0edr0zRQ1nHapHfE6vwazd0q/TR4GVl4/1dW46zVItT7Y1/MLTkPBK8w==}
     peerDependencies:
       next: '>13'
 
-  '@vercel/workflow-vm@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-vm.tgz':
-    resolution: {tarball: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-vm.tgz}
-    version: 0.0.1-alpha.4-2a8a973
+  '@vercel/workflow-vm@0.0.1-alpha.5':
+    resolution: {integrity: sha512-D6FHEGIX2fKorSs+7OXAM05DXCN4wxC/9ry4jGUaVN8L/UTNbZAx0NjCnj7dPhrcmvqyjvG/A4tkm+3mJIw/rw==}
 
-  '@vercel/workflow-world-embedded@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world-embedded.tgz':
-    resolution: {tarball: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world-embedded.tgz}
-    version: 0.0.1-alpha.3-2a8a973
+  '@vercel/workflow-world-embedded@0.0.1-alpha.6':
+    resolution: {integrity: sha512-JkvGlfu7oAvARe2nprnJzR+6Cdnc3vbGazBxrU54r2/uZWakUcPaYd84xdLEj9LaIgrcNSBbyJiLn8TTGswVew==}
     peerDependencies:
       '@opentelemetry/api': '1'
     peerDependenciesMeta:
       '@opentelemetry/api':
         optional: true
 
-  '@vercel/workflow-world-vercel@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world-vercel.tgz':
-    resolution: {tarball: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world-vercel.tgz}
-    version: 0.0.1-alpha.2-2a8a973
+  '@vercel/workflow-world-vercel@0.0.1-alpha.4':
+    resolution: {integrity: sha512-kWDE6qR71fcGFbmI6KZtEKfJLW4g81kAOVZrPphp6vz/QqUtybnRxT7m/t+yK/UFrITYztnD6sqy0InGtD4toA==}
 
-  '@vercel/workflow-world@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world.tgz':
-    resolution: {tarball: https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world.tgz}
-    version: 0.0.1-alpha.2-2a8a973
+  '@vercel/workflow-world@0.0.1-alpha.3':
+    resolution: {integrity: sha512-LYHYQrX5wNISF2vL2o3qHMsGk5cLux6mFwjIGVPXWW54DEVw9NoSpnxVS7hniYEJs/hZCCvaNLBlnV+b0CP7mQ==}
     peerDependencies:
       '@types/json-schema': ^7.0.15
-      '@types/node': ^24.0.3
+      '@types/node': ^24.6.2
       zod: ^4.0.0
 
   '@xmldom/xmldom@0.8.11':
@@ -1830,6 +1822,10 @@ packages:
 
   buffer@6.0.3:
     resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
+
+  builtin-modules@5.0.0:
+    resolution: {integrity: sha512-bkXY9WsVpY7CvMhKSR6pZilZu9Ln5WDrKVBUXf2S443etkmEO4V58heTecXcUIsNsi4Rx8JUO4NfX1IcQl4deg==}
+    engines: {node: '>=18.20'}
 
   bundle-name@4.1.0:
     resolution: {integrity: sha512-tjwM5exMg6BGRI+kNmTntNsvdZS1X8BFYS6tnJ2hdH0kVxM6/eVZ2xy+FqStSWvYmtfFMDLIxurorHwDKfDz5Q==}
@@ -5605,21 +5601,22 @@ snapshots:
     dependencies:
       mixpart: 0.0.5-alpha.0
 
-  '@vercel/swc-plugin-workflow@https://workflow-docs-gz89ripsb.vercel.sh/vercel-swc-plugin-workflow.tgz(@swc/core@1.11.24)':
+  '@vercel/swc-plugin-workflow@0.0.1-alpha.5(@swc/core@1.11.24)':
     dependencies:
       '@swc/core': 1.11.24
 
-  '@vercel/workflow-cli@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-cli.tgz(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)':
+  '@vercel/workflow-cli@0.0.1-alpha.38(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)':
     dependencies:
       '@oclif/core': 4.5.4
       '@oclif/plugin-help': 6.2.33
       '@swc/core': 1.11.24
       '@types/watchpack': 2.4.4
-      '@vercel/swc-plugin-workflow': https://workflow-docs-gz89ripsb.vercel.sh/vercel-swc-plugin-workflow.tgz(@swc/core@1.11.24)
-      '@vercel/workflow-core': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-core.tgz(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/node@20.19.19)
-      '@vercel/workflow-world': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world.tgz(@types/json-schema@7.0.15)(@types/node@20.19.19)(zod@4.1.11)
-      '@vercel/workflow-world-embedded': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world-embedded.tgz(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)
-      '@vercel/workflow-world-vercel': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world-vercel.tgz(@types/json-schema@7.0.15)(@types/node@20.19.19)
+      '@vercel/swc-plugin-workflow': 0.0.1-alpha.5(@swc/core@1.11.24)
+      '@vercel/workflow-core': 0.0.1-alpha.29(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/node@20.19.19)
+      '@vercel/workflow-world': 0.0.1-alpha.3(@types/json-schema@7.0.15)(@types/node@20.19.19)(zod@4.1.11)
+      '@vercel/workflow-world-embedded': 0.0.1-alpha.6(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)
+      '@vercel/workflow-world-vercel': 0.0.1-alpha.4(@types/json-schema@7.0.15)(@types/node@20.19.19)
+      builtin-modules: 5.0.0
       chalk: 5.6.2
       chokidar: 4.0.3
       comment-json: 4.2.5
@@ -5644,16 +5641,16 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@vercel/workflow-core@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-core.tgz(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/node@20.19.19)':
+  '@vercel/workflow-core@0.0.1-alpha.29(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/node@20.19.19)':
     dependencies:
       '@aws-sdk/credential-provider-web-identity': 3.609.0(@aws-sdk/client-sts@3.901.0)
       '@types/json-schema': 7.0.15
       '@types/ms': 2.1.0
       '@vercel/functions': 2.2.13(@aws-sdk/credential-provider-web-identity@3.609.0(@aws-sdk/client-sts@3.901.0))
-      '@vercel/workflow-vm': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-vm.tgz
-      '@vercel/workflow-world': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world.tgz(@types/json-schema@7.0.15)(@types/node@20.19.19)(zod@4.1.11)
-      '@vercel/workflow-world-embedded': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world-embedded.tgz(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)
-      '@vercel/workflow-world-vercel': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world-vercel.tgz(@types/json-schema@7.0.15)(@types/node@20.19.19)
+      '@vercel/workflow-vm': 0.0.1-alpha.5
+      '@vercel/workflow-world': 0.0.1-alpha.3(@types/json-schema@7.0.15)(@types/node@20.19.19)(zod@4.1.11)
+      '@vercel/workflow-world-embedded': 0.0.1-alpha.6(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)
+      '@vercel/workflow-world-vercel': 0.0.1-alpha.4(@types/json-schema@7.0.15)(@types/node@20.19.19)
       ajv: 8.17.1
       debug: 4.4.3(supports-color@8.1.1)
       devalue: 5.3.2
@@ -5669,12 +5666,12 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@vercel/workflow-next@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-next.tgz(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)(next@15.4.6(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))':
+  '@vercel/workflow-next@0.0.1-alpha.39(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)(next@15.4.6(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))':
     dependencies:
       '@swc/core': 1.11.24
-      '@vercel/swc-plugin-workflow': https://workflow-docs-gz89ripsb.vercel.sh/vercel-swc-plugin-workflow.tgz(@swc/core@1.11.24)
-      '@vercel/workflow-cli': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-cli.tgz(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)
-      '@vercel/workflow-core': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-core.tgz(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/node@20.19.19)
+      '@vercel/swc-plugin-workflow': 0.0.1-alpha.5(@swc/core@1.11.24)
+      '@vercel/workflow-cli': 0.0.1-alpha.38(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)
+      '@vercel/workflow-core': 0.0.1-alpha.29(@aws-sdk/client-sts@3.901.0)(@opentelemetry/api@1.9.0)(@types/node@20.19.19)
       next: 15.4.6(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     transitivePeerDependencies:
       - '@aws-sdk/client-sts'
@@ -5684,14 +5681,14 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@vercel/workflow-vm@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-vm.tgz':
+  '@vercel/workflow-vm@0.0.1-alpha.5':
     dependencies:
       seedrandom: 3.0.5
 
-  '@vercel/workflow-world-embedded@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world-embedded.tgz(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)':
+  '@vercel/workflow-world-embedded@0.0.1-alpha.6(@opentelemetry/api@1.9.0)(@types/json-schema@7.0.15)(@types/node@20.19.19)':
     dependencies:
       '@vercel/queue': 0.0.0-alpha.23
-      '@vercel/workflow-world': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world.tgz(@types/json-schema@7.0.15)(@types/node@20.19.19)(zod@4.1.11)
+      '@vercel/workflow-world': 0.0.1-alpha.3(@types/json-schema@7.0.15)(@types/node@20.19.19)(zod@4.1.11)
       ulid: 3.0.1
       zod: 4.1.11
     optionalDependencies:
@@ -5700,17 +5697,17 @@ snapshots:
       - '@types/json-schema'
       - '@types/node'
 
-  '@vercel/workflow-world-vercel@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world-vercel.tgz(@types/json-schema@7.0.15)(@types/node@20.19.19)':
+  '@vercel/workflow-world-vercel@0.0.1-alpha.4(@types/json-schema@7.0.15)(@types/node@20.19.19)':
     dependencies:
       '@vercel/oidc': 2.0.2
       '@vercel/queue': 0.0.0-alpha.23
-      '@vercel/workflow-world': https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world.tgz(@types/json-schema@7.0.15)(@types/node@20.19.19)(zod@4.1.11)
+      '@vercel/workflow-world': 0.0.1-alpha.3(@types/json-schema@7.0.15)(@types/node@20.19.19)(zod@4.1.11)
       zod: 4.1.11
     transitivePeerDependencies:
       - '@types/json-schema'
       - '@types/node'
 
-  '@vercel/workflow-world@https://workflow-docs-gz89ripsb.vercel.sh/vercel-workflow-world.tgz(@types/json-schema@7.0.15)(@types/node@20.19.19)(zod@4.1.11)':
+  '@vercel/workflow-world@0.0.1-alpha.3(@types/json-schema@7.0.15)(@types/node@20.19.19)(zod@4.1.11)':
     dependencies:
       '@types/json-schema': 7.0.15
       '@types/node': 20.19.19
@@ -5917,6 +5914,8 @@ snapshots:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
+
+  builtin-modules@5.0.0: {}
 
   bundle-name@4.1.0:
     dependencies:
