@@ -2,18 +2,6 @@
 
 An interactive AI-powered Slack bot that creates collaborative children's stories with your team. Users can start a story with a slash command, and the bot will generate an introduction based on random themes. Team members can then contribute to the story in a thread, with the AI helping to guide the narrative to completion and generating a beautiful storyboard image at the end.
 
-## Architecture
-
-This bot is built using:
-
-- **[Next.js 15](https://nextjs.org)** - React framework with App Router
-- **[Vercel Workflows](https://vercel.com/docs/workflow)** - Durable execution for long-running processes
-- **[Slack Web API](https://api.slack.com/web)** - For Slack integration
-- **[Vercel AI SDK](https://sdk.vercel.ai)** - For AI model integration
-- **TypeScript** - Type-safe development
-
-The workflow architecture allows the bot to maintain state across multiple user interactions without requiring external databases or queues.
-
 ## Getting Started
 
 ### Prerequisites
