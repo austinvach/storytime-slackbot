@@ -90,19 +90,22 @@ After deployment, update your Slack app configuration:
 
 ## How to Use
 
-1. In any Slack channel, type `/storytime`
-2. The bot will generate a story introduction with random themes
-3. Reply in the thread to add your part of the story
-4. The bot will respond with encouragement and continue the narrative
-5. After 2-3 iterations, the bot will conclude the story
-6. A beautiful storyboard image will be generated and shared
+1. **First, invite the bot to your channel**: Type `@Storytime Bot` (or whatever you named your app) in the channel and Slack will give you the option to invite it
+2. In any Slack channel where the bot is present, type `/storytime`
+3. The bot will generate a story introduction with random themes
+4. Reply in the thread to add your part of the story
+5. The bot will respond with encouragement and continue the narrative
+6. After 2-3 iterations, the bot will conclude the story
+7. A beautiful storyboard image will be generated and shared
+
+**Note**: The bot must be invited to a channel before the `/storytime` slash command will work in that channel.
 
 
 ## Development
 
 ### Local Testing
 
-Use the included `local.ts` script for testing workflows locally:
+The included `local.ts` script allows you to test the core story generation logic locally without using Slack or Vercel Workflows. This is a regular Node.js script that implements the same story generation flow but accepts input through the terminal instead of Slack:
 
 ```bash
 pnpm tsx local.ts
