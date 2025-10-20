@@ -80,14 +80,7 @@ Then update your Slack app's webhook URLs to use the ngrok URL.
 
 ## Deployment
 
-### Deploy to Vercel
-
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Add your environment variables in the Vercel dashboard
-4. Deploy!
-
-The `vercel.json` configuration is already set up for Vercel Workflows.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Fstorytime-slackbot)
 
 ### Update Slack App URLs
 
