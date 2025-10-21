@@ -1,6 +1,10 @@
 # Storytime Slack Bot
 
-An interactive AI-powered Slack bot that creates collaborative children's stories with your team. Users can start a story with a slash command, and the bot will generate an introduction based on random themes. Team members can then contribute to the story in a thread, with the AI helping to guide the narrative to completion and generating a beautiful storyboard image at the end.
+An interactive AI-powered Slack bot that creates collaborative children's stories with your team. Users can start a story with a slash command, and the bot will generate an introduction based on random themes. 
+
+Team members can then contribute to the story in a thread, with the AI helping to guide the narrative to completion and generating a beautiful storyboard image at the end.
+
+![Storyboard Example](./public/storyboard.png)
 
 ## Getting Started
 
@@ -100,6 +104,7 @@ After deployment, update your Slack app configuration:
 
 **Note**: The bot must be invited to a channel before the `/storytime` slash command will work in that channel.
 
+![Slack Interface](./public/storytime-slack.png)
 
 ## Development
 
