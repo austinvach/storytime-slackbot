@@ -115,3 +115,7 @@ The included `local.ts` script allows you to test the core story generation logi
 ```bash
 pnpm tsx local.ts
 ```
+
+## Resources
+
+- [Stateful Slack Bots with Vercel Workflow Guide](https://vercel.com/guides/stateful-slack-bots-with-vercel-workflow)
