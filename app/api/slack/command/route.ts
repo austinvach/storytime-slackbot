@@ -1,5 +1,5 @@
 import { waitUntil } from "@vercel/functions";
-import { start } from "workflow";
+import { start } from "workflow/api";
 import { storytime } from "@/workflows/create";
 
 async function startStorytime(formData: URLSearchParams) {
