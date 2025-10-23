@@ -4,7 +4,7 @@ import type {
 	ReactionsAddArguments,
 	ReactionsRemoveArguments,
 } from "@slack/web-api";
-import { FatalError } from "@vercel/workflow-core";
+import { FatalError } from "workflow";
 import { slack } from "@/lib/slack";
 
 export async function postSlackMessage(options: ChatPostMessageArguments) {

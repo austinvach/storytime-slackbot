@@ -1,4 +1,4 @@
-import { FatalError } from "@vercel/workflow-core";
+import { FatalError } from "workflow";
 import { generateText } from "ai";
 import { IMAGE_GEN_PROMPT } from "@/lib/prompt";
 import { slack } from "@/lib/slack";

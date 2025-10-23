@@ -1,4 +1,4 @@
-import { defineHook, FatalError } from "@vercel/workflow-core";
+import { defineHook, FatalError } from "workflow";
 import type { ModelMessage } from "ai";
 import { SYSTEM_PROMPT, THEMES } from "../lib/prompt";
 
