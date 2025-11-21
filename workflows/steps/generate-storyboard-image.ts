@@ -1,5 +1,5 @@
-import { FatalError } from "workflow";
 import { generateText } from "ai";
+import { FatalError } from "workflow";
 import { IMAGE_GEN_PROMPT } from "@/lib/prompt";
 import { slack } from "@/lib/slack";
 
@@ -12,7 +12,8 @@ export async function generateStoryboardImage(
 
 	console.time("Generating storyboard image");
 	const result = await generateText({
-		model: "google/gemini-2.5-flash-image-preview",
+		//model: "google/gemini-2.5-flash-image-preview",
+		model: "google/gemini-3-pro-image",
 		prompt: IMAGE_GEN_PROMPT(finalStory),
 	});
 	console.timeEnd("Generating storyboard image");
