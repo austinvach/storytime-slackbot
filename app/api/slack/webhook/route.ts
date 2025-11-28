@@ -35,12 +35,22 @@ export async function POST(req: Request) {
 		if (bot_id) {
 			console.log(`Ignoring bot message`);
 		} else {
-			const token = `slack-message-webhook:${channel}:${thread_ts}`;
-			const hook = await slackMessageHook.resume(token, parsedBody.data.event);
-			if (hook) {
-				console.log(`Hook resumed for token: ${token} (${hook.runId})`);
-			} else {
-				console.log(`No hook found for token: ${token}`);
+			try {
+				const token = `slack-message-webhook:${channel}:${thread_ts}`;
+				const hook = await slackMessageHook.resume(
+					token,
+					parsedBody.data.event,
+				);
+				if (hook) {
+					console.log(`Hook resumed for token: ${token} (${hook.runId})`);
+				} else {
+					console.log(`No hook found for token: ${token}`);
+				}
+			} catch (error) {
+				// `resume()` will nominally throw if the hook is not found
+				// (i.e. someone posted in a thread that is not a Storytime thread),
+				// but we don't want to fail the webhook request
+				console.warn(`Error resuming hook: ${error}`);
 			}
 		}
 	}
