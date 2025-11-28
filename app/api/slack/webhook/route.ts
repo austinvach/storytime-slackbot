@@ -41,11 +41,7 @@ export async function POST(req: Request) {
 					token,
 					parsedBody.data.event,
 				);
-				if (hook) {
-					console.log(`Hook resumed for token: ${token} (${hook.runId})`);
-				} else {
-					console.log(`No hook found for token: ${token}`);
-				}
+				console.log(`Hook resumed for token: ${token} (${hook.runId})`);
 			} catch (error) {
 				// `resume()` will nominally throw if the hook is not found
 				// (i.e. someone posted in a thread that is not a Storytime thread),
