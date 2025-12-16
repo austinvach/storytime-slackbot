@@ -35,7 +35,7 @@ export function parseStorytimeArgs(argv: string[]): StorytimeArgs {
 		themes,
 		model: args["--model"] || "meta/llama-4-scout",
 		imageModel: args["--image-model"] || "google/gemini-3-pro-image",
-		thinkingEmoji: args["--thinking-emoji"] || "thinking-hard",
+		thinkingEmoji: args["--thinking-emoji"] || "thinking_face",
 	};
 }
 
