@@ -1,6 +1,6 @@
+import { stringToArgv } from "@tootallnate/string-argv";
 import type { ModelMessage } from "ai";
 import arg from "arg";
-import stringArgv from "string-argv";
 import { defineHook, FatalError } from "workflow";
 import { z } from "zod";
 import { SYSTEM_PROMPT, THEMES } from "../lib/prompt";
@@ -37,30 +37,35 @@ export async function storytime(slashCommand: URLSearchParams) {
 		throw new FatalError("`channel_id` is required");
 	}
 
-	const argv = stringArgv(slashCommand.get("text") || "");
+	const argv = stringToArgv(slashCommand.get("text") || "");
 	console.log({ argv });
 
-	const args = arg({
-		'--model': String,
-		'--image-model': String,
-		'--theme': String,
-		'--theme2': String,
-		'--thinking-emoji': String,
+	const args = arg(
+		{
+			"--model": String,
+			"--image-model": String,
+			"--theme": String,
+			"--theme2": String,
+			"--thinking-emoji": String,
 
-		// Aliases
-		'-m': '--model',
-		'-i': '--image-model',
-		'-t': '--theme',
-		'-t2': '--theme2',
-		'-e': '--thinking-emoji',
-		'--theme1': '--theme',
-	}, { argv });
+			// Aliases
+			"-m": "--model",
+			"-i": "--image-model",
+			"-t": "--theme",
+			"-t2": "--theme2",
+			"-e": "--thinking-emoji",
+			"--theme1": "--theme",
+		},
+		{ argv },
+	);
 
-	const theme = args['--theme'] || THEMES[Math.floor(Math.random() * THEMES.length)];
-	const theme2 = args['--theme2'] || THEMES[Math.floor(Math.random() * THEMES.length)];
-	const model = args['--model'] || "meta/llama-4-scout";
-	const imageModel = args['--image-model'] || "google/gemini-3-pro-image";
-	const thinkingEmoji = args['--thinking-emoji'] || "thinking-hard";
+	const theme =
+		args["--theme"] || THEMES[Math.floor(Math.random() * THEMES.length)];
+	const theme2 =
+		args["--theme2"] || THEMES[Math.floor(Math.random() * THEMES.length)];
+	const model = args["--model"] || "meta/llama-4-scout";
+	const imageModel = args["--image-model"] || "google/gemini-3-pro-image";
+	const thinkingEmoji = args["--thinking-emoji"] || "thinking-hard";
 	console.log({ theme, theme2, model, imageModel, thinkingEmoji });
 
 	// ...including local state like the entire message history
