@@ -7,13 +7,13 @@ export async function generateStoryboardImage(
 	channelId: string,
 	threadTs: string,
 	finalStory: string,
+	imageModel: string,
 ) {
 	"use step";
 
 	console.time("Generating storyboard image");
 	const result = await generateText({
-		//model: "google/gemini-2.5-flash-image-preview",
-		model: "google/gemini-3-pro-image",
+		model: imageModel,
 		prompt: IMAGE_GEN_PROMPT(finalStory),
 	});
 	console.timeEnd("Generating storyboard image");

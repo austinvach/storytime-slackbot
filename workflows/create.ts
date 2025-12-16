@@ -1,5 +1,8 @@
 import type { ModelMessage } from "ai";
+import arg from "arg";
+import stringArgv from "string-argv";
 import { defineHook, FatalError } from "workflow";
+import { z } from "zod";
 import { SYSTEM_PROMPT, THEMES } from "../lib/prompt";
 
 // Look ma no queues or kv!
@@ -17,13 +20,16 @@ import {
 	updateSlackMessage,
 } from "./steps/post-slack-message";
 
-export const slackMessageHook = defineHook<{
-	text: string;
-	ts: string;
-}>();
+const slackMessageHookSchema = z.object({
+	text: z.string(),
+	ts: z.string(),
+});
+
+export const slackMessageHook = defineHook({ schema: slackMessageHookSchema });
 
 export async function storytime(slashCommand: URLSearchParams) {
 	"use workflow";
+	console.log(slashCommand);
 
 	// Initialize the workflow
 	const channelId = slashCommand.get("channel_id");
@@ -31,10 +37,28 @@ export async function storytime(slashCommand: URLSearchParams) {
 		throw new FatalError("`channel_id` is required");
 	}
 
-	const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
-	const theme2 = THEMES[Math.floor(Math.random() * THEMES.length)];
-	const model = "meta/llama-4-scout";
-	console.log({ theme, theme2, model });
+	const argv = stringArgv(slashCommand.get("text") || "");
+	console.log({ argv });
+
+	const args = arg({
+		'--model': String,
+		'--image-model': String,
+		'--theme': String,
+		'--theme2': String,
+
+		// Aliases
+		'-m': '--model',
+		'-i': '--image-model',
+		'-t': '--theme',
+		'-t2': '--theme2',
+		'--theme1': '--theme',
+	}, { argv });
+
+	const theme = args['--theme'] || THEMES[Math.floor(Math.random() * THEMES.length)];
+	const theme2 = args['--theme2'] || THEMES[Math.floor(Math.random() * THEMES.length)];
+	const model = args['--model'] || "meta/llama-4-scout";
+	const imageModel = args['--image-model'] || "google/gemini-3-pro-image";
+	console.log({ theme, theme2, model, imageModel });
 
 	// ...including local state like the entire message history
 	let finalStory = "";
@@ -146,7 +170,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 			thread_ts: ts,
 			reply_broadcast: true,
 		}),
-		generateStoryboardImage(channelId, ts, finalStory),
+		generateStoryboardImage(channelId, ts, finalStory, imageModel),
 	]);
 
 	// Update the final story message to remove the "generating storyboard image" message
