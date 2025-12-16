@@ -45,12 +45,14 @@ export async function storytime(slashCommand: URLSearchParams) {
 		'--image-model': String,
 		'--theme': String,
 		'--theme2': String,
+		'--thinking-emoji': String,
 
 		// Aliases
 		'-m': '--model',
 		'-i': '--image-model',
 		'-t': '--theme',
 		'-t2': '--theme2',
+		'-e': '--thinking-emoji',
 		'--theme1': '--theme',
 	}, { argv });
 
@@ -58,7 +60,8 @@ export async function storytime(slashCommand: URLSearchParams) {
 	const theme2 = args['--theme2'] || THEMES[Math.floor(Math.random() * THEMES.length)];
 	const model = args['--model'] || "meta/llama-4-scout";
 	const imageModel = args['--image-model'] || "google/gemini-3-pro-image";
-	console.log({ theme, theme2, model, imageModel });
+	const thinkingEmoji = args['--thinking-emoji'] || "thinking-hard";
+	console.log({ theme, theme2, model, imageModel, thinkingEmoji });
 
 	// ...including local state like the entire message history
 	let finalStory = "";
@@ -79,7 +82,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 		// Create the initial top-level message in the channel with a placeholder
 		postSlackMessage({
 			channel: channelId,
-			text: `${introText}\n\n> _Generating introduction…_ :thinking-hard:`,
+			text: `${introText}\n\n> _Generating introduction…_ :${thinkingEmoji}:`,
 		}),
 		// Ask the LLM to initiate the story
 		generateStoryPiece(messages, model),
@@ -127,7 +130,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 			addReactionToMessage({
 				channel: channelId,
 				timestamp: data.ts,
-				name: "thinking-hard",
+				name: thinkingEmoji,
 			}),
 		]);
 
@@ -145,7 +148,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 			removeReactionFromMessage({
 				channel: channelId,
 				timestamp: data.ts,
-				name: "thinking-hard",
+				name: thinkingEmoji,
 			}),
 		]);
 
@@ -166,7 +169,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 	const [{ ts: finalTs }, fileId] = await Promise.all([
 		postSlackMessage({
 			channel: channelId,
-			text: `${finalText}\n\n_Generating storyboard image…_ :thinking-hard:`,
+			text: `${finalText}\n\n_Generating storyboard image…_ :${thinkingEmoji}:`,
 			thread_ts: ts,
 			reply_broadcast: true,
 		}),
