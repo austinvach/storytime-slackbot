@@ -1,11 +1,12 @@
 import dotenv from "dotenv";
+
 dotenv.config({ path: ".env.local" });
 
 import readline from "node:readline/promises";
 import { generateText, type ModelMessage, Output } from "ai";
-import { z } from "zod";
 import terminalImage from "terminal-image";
-import { SYSTEM_PROMPT, THEMES, IMAGE_GEN_PROMPT } from "./lib/prompt.ts";
+import { z } from "zod";
+import { IMAGE_GEN_PROMPT, SYSTEM_PROMPT, THEMES } from "./lib/prompt.ts";
 
 const rl = readline.createInterface({
 	input: process.stdin,
@@ -38,9 +39,6 @@ let finalStory = "";
 
 while (true) {
 	const result = await generateText({
-		//model: "openai/gpt-5-mini",
-		//model: "anthropic/claude-4-sonnet",
-		//model: "xai/grok-4",
 		model: "meta/llama-4-scout",
 		messages,
 		experimental_output: Output.object({
@@ -76,7 +74,7 @@ console.log("Here is the final story:");
 console.log(finalStory);
 
 const result = await generateText({
-	model: "google/gemini-2.5-flash-image-preview",
+	model: "google/gemini-3-pro-image",
 	prompt: IMAGE_GEN_PROMPT(finalStory),
 });
 
