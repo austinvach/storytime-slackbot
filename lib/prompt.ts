@@ -16,14 +16,21 @@ export const THEMES = [
 	"Folklore",
 ];
 
-export const SYSTEM_PROMPT = (theme: string, theme2: string) => `
+const formatThemes = (themes: string[]): string => {
+	if (themes.length === 1) return `"${themes[0]}"`;
+	if (themes.length === 2) return `"${themes[0]}" and "${themes[1]}"`;
+	const allButLast = themes.slice(0, -1).map((t) => `"${t}"`).join(", ");
+	return `${allButLast}, and "${themes[themes.length - 1]}"`;
+};
+
+export const SYSTEM_PROMPT = (themes: string[]) => `
 You are a storytime generating bot.
 
 You will initiate the story by providing the introduction (one or two sentences),
 and the user will submit the remaining pieces of the story. Be creative with the
 introduction, and make it interesting and engaging.
 
-The themes of the story are "${theme}" and "${theme2}".
+The themes of the story are ${formatThemes(themes)}.
 
 After 2 to 3 iterations, the story should be complete and you will take the pieces
 of the story and polish it up

@@ -6,22 +6,23 @@ import readline from "node:readline/promises";
 import { generateText, type ModelMessage, Output } from "ai";
 import terminalImage from "terminal-image";
 import { z } from "zod";
-import { IMAGE_GEN_PROMPT, SYSTEM_PROMPT, THEMES } from "./lib/prompt.ts";
+import { parseStorytimeArgs } from "./lib/args.ts";
+import { IMAGE_GEN_PROMPT, SYSTEM_PROMPT } from "./lib/prompt.ts";
 
 const rl = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout,
 });
 
-const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
-const theme2 = THEMES[Math.floor(Math.random() * THEMES.length)];
-console.log(`Theme: ${theme}`);
-console.log(`Theme2: ${theme2}`);
+const { themes, model, imageModel } = parseStorytimeArgs(process.argv.slice(2));
+console.log(`Themes: ${themes.join(", ")}`);
+console.log(`Model: ${model}`);
+console.log(`Image Model: ${imageModel}`);
 
 const messages: ModelMessage[] = [
 	{
 		role: "system",
-		content: SYSTEM_PROMPT(theme, theme2),
+		content: SYSTEM_PROMPT(themes),
 	},
 	{
 		role: "user",
@@ -39,7 +40,7 @@ let finalStory = "";
 
 while (true) {
 	const result = await generateText({
-		model: "meta/llama-4-scout",
+		model,
 		messages,
 		experimental_output: Output.object({
 			schema: StorytimeSchema,
@@ -74,7 +75,7 @@ console.log("Here is the final story:");
 console.log(finalStory);
 
 const result = await generateText({
-	model: "google/gemini-3-pro-image",
+	model: imageModel,
 	prompt: IMAGE_GEN_PROMPT(finalStory),
 });
 

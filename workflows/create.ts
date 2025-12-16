@@ -1,9 +1,9 @@
 import { stringToArgv } from "@tootallnate/string-argv";
 import type { ModelMessage } from "ai";
-import arg from "arg";
 import { defineHook, FatalError } from "workflow";
 import { z } from "zod";
-import { SYSTEM_PROMPT, THEMES } from "../lib/prompt";
+import { parseStorytimeArgs } from "../lib/args";
+import { SYSTEM_PROMPT } from "../lib/prompt";
 
 // Look ma no queues or kv!
 
@@ -40,40 +40,15 @@ export async function storytime(slashCommand: URLSearchParams) {
 	const argv = stringToArgv(slashCommand.get("text") || "");
 	console.log({ argv });
 
-	const args = arg(
-		{
-			"--model": String,
-			"--image-model": String,
-			"--theme": String,
-			"--theme2": String,
-			"--thinking-emoji": String,
-
-			// Aliases
-			"-m": "--model",
-			"-i": "--image-model",
-			"-t": "--theme",
-			"-t2": "--theme2",
-			"-e": "--thinking-emoji",
-			"--theme1": "--theme",
-		},
-		{ argv },
-	);
-
-	const theme =
-		args["--theme"] || THEMES[Math.floor(Math.random() * THEMES.length)];
-	const theme2 =
-		args["--theme2"] || THEMES[Math.floor(Math.random() * THEMES.length)];
-	const model = args["--model"] || "meta/llama-4-scout";
-	const imageModel = args["--image-model"] || "google/gemini-3-pro-image";
-	const thinkingEmoji = args["--thinking-emoji"] || "thinking-hard";
-	console.log({ theme, theme2, model, imageModel, thinkingEmoji });
+	const { themes, model, imageModel, thinkingEmoji } = parseStorytimeArgs(argv);
+	console.log({ themes, model, imageModel, thinkingEmoji });
 
 	// ...including local state like the entire message history
 	let finalStory = "";
 	const messages: ModelMessage[] = [
 		{
 			role: "system",
-			content: SYSTEM_PROMPT(theme, theme2),
+			content: SYSTEM_PROMPT(themes),
 		},
 		{
 			role: "user",
