@@ -21,8 +21,8 @@ importers:
         specifier: ^1.13.0
         version: 1.13.1(@opentelemetry/api-logs@0.57.2)(@opentelemetry/api@1.9.0)(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/resources@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-logs@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-metrics@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))
       ai:
-        specifier: ^5.0.52
-        version: 5.0.59(zod@4.1.11)
+        specifier: ^5.0.114
+        version: 5.0.114(zod@4.1.11)
       arg:
         specifier: ^5.0.2
         version: 5.0.2
@@ -78,14 +78,14 @@ importers:
 
 packages:
 
-  '@ai-sdk/gateway@1.0.32':
-    resolution: {integrity: sha512-TQRIM63EI/ccJBc7RxeB8nq/CnGNnyl7eu5stWdLwL41stkV5skVeZJe0QRvFbaOrwCkgUVE0yrUqJi4tgDC1A==}
+  '@ai-sdk/gateway@2.0.21':
+    resolution: {integrity: sha512-BwV7DU/lAm3Xn6iyyvZdWgVxgLu3SNXzl5y57gMvkW4nGhAOV5269IrJzQwGt03bb107sa6H6uJwWxc77zXoGA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/provider-utils@3.0.10':
-    resolution: {integrity: sha512-T1gZ76gEIwffep6MWI0QNy9jgoybUHE7TRaHB5k54K8mF91ciGFlbtCGxDYhMH3nCRergKwYFIDeFF0hJSIQHQ==}
+  '@ai-sdk/provider-utils@3.0.19':
+    resolution: {integrity: sha512-W41Wc9/jbUVXVwCN/7bWa4IKe8MtxO3EyA0Hfhx6grnmiYlCvpI8neSYWFE0zScXJkgA/YK3BRybzgyiXuu6JA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -1799,8 +1799,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  ai@5.0.59:
-    resolution: {integrity: sha512-SuAFxKXt2Ha9FiXB3gaOITkOg9ek/3QNVatGVExvTT4gNXc+hJpuNe1dmuwf6Z5Op4fzc8wdbsrYP27ZCXBzlw==}
+  ai@5.0.114:
+    resolution: {integrity: sha512-q/lxcJA6avYn/TXTaE41VX6p9lN245mDU9bIGuPpfk6WxDMvmMoUKUIS0/aXAPYN3UmkUn/r9rvq/8C98RoCWw==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -4074,13 +4074,14 @@ packages:
 
 snapshots:
 
-  '@ai-sdk/gateway@1.0.32(zod@4.1.11)':
+  '@ai-sdk/gateway@2.0.21(zod@4.1.11)':
     dependencies:
       '@ai-sdk/provider': 2.0.0
-      '@ai-sdk/provider-utils': 3.0.10(zod@4.1.11)
+      '@ai-sdk/provider-utils': 3.0.19(zod@4.1.11)
+      '@vercel/oidc': 3.0.5
       zod: 4.1.11
 
-  '@ai-sdk/provider-utils@3.0.10(zod@4.1.11)':
+  '@ai-sdk/provider-utils@3.0.19(zod@4.1.11)':
     dependencies:
       '@ai-sdk/provider': 2.0.0
       '@standard-schema/spec': 1.0.0
@@ -6333,11 +6334,11 @@ snapshots:
 
   acorn@8.15.0: {}
 
-  ai@5.0.59(zod@4.1.11):
+  ai@5.0.114(zod@4.1.11):
     dependencies:
-      '@ai-sdk/gateway': 1.0.32(zod@4.1.11)
+      '@ai-sdk/gateway': 2.0.21(zod@4.1.11)
       '@ai-sdk/provider': 2.0.0
-      '@ai-sdk/provider-utils': 3.0.10(zod@4.1.11)
+      '@ai-sdk/provider-utils': 3.0.19(zod@4.1.11)
       '@opentelemetry/api': 1.9.0
       zod: 4.1.11
 
