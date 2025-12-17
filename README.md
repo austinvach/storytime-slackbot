@@ -113,7 +113,7 @@ The `/storytime` command supports several optional flags:
 | `--theme` | `-t` | Story theme (can be specified multiple times). Defaults to 2 random themes if fewer than 2 are provided. |
 | `--model` | `-m` | Text generation model. Default: `meta/llama-4-scout` |
 | `--image-model` | `-i` | Image generation model. Default: `google/gemini-3-pro-image` |
-| `--thinking-emoji` | `-e` | Emoji shown while processing. Default: `thinking_face` |
+| `--thinking-emoji` | `-e` | Emoji shown while processing. Default: `thinking_face` 🤔 |
 
 The `--model` and `--image-model` flags accept [AI Gateway model specifiers](https://vercel.com/ai-gateway/models) (e.g., `anthropic/claude-sonnet-4`, `openai/gpt-4.1-mini`, `google/gemini-2.5-flash`).
 
