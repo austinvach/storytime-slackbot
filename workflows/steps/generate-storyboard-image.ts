@@ -8,13 +8,14 @@ export async function generateStoryboardImage(
 	threadTs: string,
 	finalStory: string,
 	imageModel: string,
+	imageStyle: string,
 ) {
 	"use step";
 
 	console.time("Generating storyboard image");
 	const result = await generateText({
 		model: imageModel,
-		prompt: IMAGE_GEN_PROMPT(finalStory),
+		prompt: IMAGE_GEN_PROMPT(finalStory, imageStyle),
 	});
 	console.timeEnd("Generating storyboard image");
 

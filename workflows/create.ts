@@ -40,8 +40,8 @@ export async function storytime(slashCommand: URLSearchParams) {
 	const argv = stringToArgv(slashCommand.get("text") || "");
 	console.log({ argv });
 
-	const { themes, model, imageModel, thinkingEmoji } = parseStorytimeArgs(argv);
-	console.log({ themes, model, imageModel, thinkingEmoji });
+	const { themes, model, imageModel, imageStyle, thinkingEmoji } = parseStorytimeArgs(argv);
+	console.log({ themes, model, imageModel, imageStyle, thinkingEmoji });
 
 	// ...including local state like the entire message history
 	let finalStory = "";
@@ -153,7 +153,7 @@ export async function storytime(slashCommand: URLSearchParams) {
 			thread_ts: ts,
 			reply_broadcast: true,
 		}),
-		generateStoryboardImage(channelId, ts, finalStory, imageModel),
+		generateStoryboardImage(channelId, ts, finalStory, imageModel, imageStyle),
 	]);
 
 	// Update the final story message to remove the "generating storyboard image" message

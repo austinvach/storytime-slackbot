@@ -5,6 +5,7 @@ export interface StorytimeArgs {
 	themes: string[];
 	model: string;
 	imageModel: string;
+	imageStyle: string;
 	thinkingEmoji: string;
 }
 
@@ -13,12 +14,14 @@ export function parseStorytimeArgs(argv: string[]): StorytimeArgs {
 		{
 			"--model": String,
 			"--image-model": String,
+			"--image-style": String,
 			"--theme": [String],
 			"--thinking-emoji": String,
 
 			// Aliases
 			"-m": "--model",
 			"-i": "--image-model",
+			"-s": "--image-style",
 			"-t": "--theme",
 			"-e": "--thinking-emoji",
 		},
@@ -35,6 +38,7 @@ export function parseStorytimeArgs(argv: string[]): StorytimeArgs {
 		themes,
 		model: args["--model"] || "meta/llama-4-scout",
 		imageModel: args["--image-model"] || "google/gemini-3-pro-image",
+		imageStyle: args["--image-style"] || "",
 		thinkingEmoji: args["--thinking-emoji"] || "thinking_face",
 	};
 }
