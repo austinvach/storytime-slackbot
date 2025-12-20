@@ -9,7 +9,7 @@ export async function generateStoryboardImage(
 	finalStory: string,
 	imageModel: string,
 	imageStyle: string,
-) {
+): Promise<string | null> {
 	"use step";
 
 	console.time("Generating storyboard image");
@@ -19,11 +19,23 @@ export async function generateStoryboardImage(
 	});
 	console.timeEnd("Generating storyboard image");
 
+	// Check if the model returned any image files
+	const imageFile = result.files?.[0];
+	if (!imageFile?.uint8Array) {
+		console.warn(`Image generation failed: model "${imageModel}" did not return any image files`);
+		await slack.chat.postMessage({
+			channel: channelId,
+			thread_ts: threadTs,
+			text: `⚠️ Image generation failed: the model \`${imageModel}\` does not support image generation.`,
+		});
+		return null;
+	}
+
 	console.time("Uploading image to Slack");
 	const res = await slack.files.uploadV2({
 		channel_id: channelId,
 		thread_ts: threadTs,
-		file: Buffer.from(result.files[0].uint8Array),
+		file: Buffer.from(imageFile.uint8Array),
 		filename: "storyboard.png",
 		title: "Storyboard",
 	});

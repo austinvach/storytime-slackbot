@@ -163,6 +163,8 @@ export async function storytime(slashCommand: URLSearchParams) {
 		text: finalText,
 	});
 
-	// Broadcast the storyboard image to the thread
-	await broadcastStoryboardImage(channelId, ts, fileId);
+	// Broadcast the storyboard image to the thread (if image generation succeeded)
+	if (fileId) {
+		await broadcastStoryboardImage(channelId, ts, fileId);
+	}
 }
