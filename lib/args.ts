@@ -36,7 +36,7 @@ export function parseStorytimeArgs(argv: string[]): StorytimeArgs {
 
 	return {
 		themes,
-		model: args["--model"] || "meta/llama-4-scout",
+		model: args["--model"] || "openai/gpt-4o",
 		imageModel: args["--image-model"] || "google/gemini-3-pro-image",
 		imageStyle: args["--image-style"] || "",
 		thinkingEmoji: args["--thinking-emoji"] || "thinking_face",
