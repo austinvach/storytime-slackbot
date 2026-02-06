@@ -42,4 +42,3 @@ export function parseStorytimeArgs(argv: string[]): StorytimeArgs {
 		thinkingEmoji: args["--thinking-emoji"] || "thinking_face",
 	};
 }
-

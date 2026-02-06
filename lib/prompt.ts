@@ -19,7 +19,10 @@ export const THEMES = [
 const formatThemes = (themes: string[]): string => {
 	if (themes.length === 1) return `"${themes[0]}"`;
 	if (themes.length === 2) return `"${themes[0]}" and "${themes[1]}"`;
-	const allButLast = themes.slice(0, -1).map((t) => `"${t}"`).join(", ");
+	const allButLast = themes
+		.slice(0, -1)
+		.map((t) => `"${t}"`)
+		.join(", ");
 	return `${allButLast}, and "${themes[themes.length - 1]}"`;
 };
 
@@ -56,9 +59,9 @@ When the story is complete, say a light hearted comment about the story in the "
 
 export const IMAGE_GEN_PROMPT = (
 	finalStory: string,
-	style = '',
+	style = "",
 ) => `Generate an image of a children's storybook panel consisting of
-4 to 5 (four to five) panels with the following story${style ? ` in the style of ${style}` : ''}.
+4 to 5 (four to five) panels with the following story${style ? ` in the style of ${style}` : ""}.
 
 Include text in the panels to tell the story.
 Please ensure that all panels are visible, and not being cut off.

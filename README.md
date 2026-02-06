@@ -1,6 +1,6 @@
 # Storytime Slack Bot
 
-An interactive AI-powered Slack bot that creates collaborative children's stories with your team. Users can start a story with a slash command, and the bot will generate an introduction based on random themes. 
+An interactive AI-powered Slack bot that creates collaborative children's stories with your team. Users can start a story with a slash command, and the bot will generate an introduction based on random themes.
 
 Team members can then contribute to the story in a thread, with the AI helping to guide the narrative to completion and generating a beautiful storyboard image at the end.
 
@@ -10,7 +10,7 @@ Team members can then contribute to the story in a thread, with the AI helping t
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - pnpm (recommended) or npm
 - A Slack workspace where you can install apps
 - Vercel account for deployment
@@ -89,6 +89,7 @@ Then update your Slack app's webhook URLs to use the ngrok URL.
 ### Update Slack App URLs
 
 After deployment, update your Slack app configuration:
+
 - Event Subscriptions Request URL: `https://your-app.vercel.app/api/slack/webhook`
 - Slash Command Request URL: `https://your-app.vercel.app/api/slack/command`
 
@@ -108,13 +109,13 @@ After deployment, update your Slack app configuration:
 
 The `/storytime` command supports several optional flags:
 
-| Flag | Alias | Description |
-|------|-------|-------------|
-| `--theme` | `-t` | Story theme (can be specified multiple times). Defaults to 2 random themes if fewer than 2 are provided. |
-| `--model` | `-m` | Text generation model. Default: `meta/llama-4-scout` |
-| `--image-model` | `-i` | Image generation model. Default: `google/gemini-3-pro-image` |
-| `--image-style` | `-s` | Art style for the generated storyboard image (e.g., "Dr. Seuss", "coloring book", "watercolor"). |
-| `--thinking-emoji` | `-e` | Emoji shown while processing. Default: `thinking_face` 🤔 |
+| Flag               | Alias | Description                                                                                              |
+| ------------------ | ----- | -------------------------------------------------------------------------------------------------------- |
+| `--theme`          | `-t`  | Story theme (can be specified multiple times). Defaults to 2 random themes if fewer than 2 are provided. |
+| `--model`          | `-m`  | Text generation model. Default: `meta/llama-4-scout`                                                     |
+| `--image-model`    | `-i`  | Image generation model. Default: `google/gemini-3-pro-image`                                             |
+| `--image-style`    | `-s`  | Art style for the generated storyboard image (e.g., "Dr. Seuss", "coloring book", "watercolor").         |
+| `--thinking-emoji` | `-e`  | Emoji shown while processing. Default: `thinking_face` 🤔                                                |
 
 The `--model` and `--image-model` flags accept [AI Gateway model specifiers](https://vercel.com/ai-gateway/models) (e.g., `anthropic/claude-sonnet-4`, `openai/gpt-4.1-mini`, `google/gemini-2.5-flash`).
 

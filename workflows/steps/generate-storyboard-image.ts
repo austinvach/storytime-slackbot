@@ -22,7 +22,9 @@ export async function generateStoryboardImage(
 	// Check if the model returned any image files
 	const imageFile = result.files?.[0];
 	if (!imageFile?.uint8Array) {
-		console.warn(`Image generation failed: model "${imageModel}" did not return any image files`);
+		console.warn(
+			`Image generation failed: model "${imageModel}" did not return any image files`,
+		);
 		await slack.chat.postMessage({
 			channel: channelId,
 			thread_ts: threadTs,
