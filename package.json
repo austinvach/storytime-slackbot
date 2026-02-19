@@ -21,7 +21,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "terminal-image": "^3.1.1",
-    "workflow": "https://workflow-docs-do1uciy1x.vercel.sh/workflow.tgz",
+    "workflow": "https://workflow-docs-o1s0xm5v1.vercel.sh/workflow.tgz",
     "zod": "^4.0.17"
   },
   "devDependencies": {
